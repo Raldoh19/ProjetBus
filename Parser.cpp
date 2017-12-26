@@ -66,7 +66,7 @@ ListePlaces* Parser::generateParking()
 				if(ligneDecoupe[2].length() == 0)
 					try
 					{
-						parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
+						parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
 					}
 					catch(invalid_argument ia)
 					{
@@ -74,7 +74,7 @@ ListePlaces* Parser::generateParking()
 				else
 					try
 					{
-					parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
+					parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
 					}
 					catch(invalid_argument ia)
 					{
@@ -155,20 +155,25 @@ void Parser::generateTrajet(ListePlaces parking)
 			int nombreElement = split(ligneDecoupe, ligne,';');
 			if(nombreElement == 3)
 			{
-				string PlaceConcerne = ligneDecoupe[0];
+				Place * placeConcerne = parking.recherchePlace(ligneDecoupe[0]);
 				string ES = ligneDecoupe[2];
-				ListePlaces trajetPlace = ListePlaces();
+				ListePlaces * trajetPlace = new ListePlaces();
 				vector<string> placeDecoupe;
-				int nombrePlace = split(placeDecoupe, ligne,',');
+				int nombrePlace = split(placeDecoupe, ligneDecoupe[1],',');
 				for(int i = 0;i < nombrePlace;i++)
 				{
-					Place placeGenere = parking.recherchePlace(placeDecoupe[i]);
-					trajetPlace.ajouterPlace(placeGenere);
+					try
+					{
+					Place * placeGenere = parking.recherchePlace(placeDecoupe[i]);
+					trajetPlace->ajouterPlace(placeGenere);
+					}catch(exception * e)
+					{
+					}
 				}
 				if(ES == "S")
-					parking.recherchePlace(PlaceConcerne).setPlaceSortie(&trajetPlace);
+					placeConcerne->setPlaceSortie(trajetPlace);
 				else
-					parking.recherchePlace(PlaceConcerne).setPlaceAcces(&trajetPlace);
+					placeConcerne->setPlaceAcces(trajetPlace);
 			}
 			else
 				throw new exception("Fichier CSV mal configure");
