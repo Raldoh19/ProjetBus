@@ -8,14 +8,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	
 	try
 	{
-		Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
-		ListePlaces * parking = parser.generateParking();
-		parser.generateTrajet(*parking);
-		vector<Vehicule> buses = parser.generateVehicules();
-		vector<Mission> missions = parser.generateMissions();
-		for(int i =0; i<buses.size(); i ++)
+		ListePlaces * parking = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Emplacement.csv").generateParking();
+		vector<Vehicule> buses = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Vehicule.csv").generateVehicules();
+		vector<Mission> missions = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Mission.csv").generateMissions();
+		for(unsigned int i =0; i<buses.size(); i ++)
 		{
 			buses[i].ajouterMission(missions[i]);
 			buses[i].afficherMissions();

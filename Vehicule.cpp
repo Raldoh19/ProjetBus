@@ -61,3 +61,11 @@ void Vehicule::retirerMission(Mission m)
         nbMissions--;
     }
 }
+
+std::vector<Mission> Vehicule::getMissions(){
+	return missions;
+}
+
+int Vehicule::getNbMissions(){
+	return nbMissions;
+}

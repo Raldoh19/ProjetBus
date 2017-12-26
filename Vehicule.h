@@ -21,6 +21,8 @@ public:
 	void ajouterMission(Mission m);
 	void retirerMission(Mission m);
 	void afficherMissions();
+	std::vector<Mission> getMissions();
+	int getNbMissions();
 };
 
 #endif

@@ -17,6 +17,7 @@ public:
 	bool estApres(Date d);
 	bool estEgale(Date d);
 	std::string toString();
+	void ajouterMinutes(int nbMinutes);
 	~Date(void);
 };
 

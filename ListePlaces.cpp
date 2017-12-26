@@ -23,17 +23,17 @@ int ListePlaces::getNbPlaces()
 	return nbPlaces;
 }
 
-void ListePlaces::ajouterPlace(Place *p)
+void ListePlaces::ajouterPlace(Place p)
 {
 	listePlaces.push_back(p);
 	nbPlaces++;
 }
 
-void ListePlaces::supprimerPlace(Place *p)
+void ListePlaces::supprimerPlace(Place p)
 {
-    int i = 0;
+    unsigned int i = 0;
 
-    while( i < nbPlaces && (p->getNumeroPlace().compare(listePlaces[i]->getNumeroPlace()) == -1))
+    while( i < nbPlaces && (p.getNumeroPlace().compare(listePlaces[i].getNumeroPlace()) == -1))
 	{
         i++;
     }
@@ -51,27 +51,8 @@ void ListePlaces::supprimerPlace(Place *p)
 
 void ListePlaces::afficherListePlaces()
 {
-	for(int i =0 ; i < nbPlaces; i++)
+	for(unsigned int i =0 ; i < nbPlaces; i++)
 	{
-		listePlaces[i]->afficher();
+		listePlaces[i].afficher();
 	}
-}
-
-Place* ListePlaces::recherchePlace(std::string placeCherche)
-{
-	for(int i=0;i<this->nbPlaces;i++)
-	{
-		if(listePlaces[i]->getNumeroPlace() == placeCherche)
-			return listePlaces[i];
-	}
-	throw new exception("Erreur de configuration dans le fichier CSV !");
-}
-
-void ListePlaces::afficher()
-{
-	for(int i =0 ; i < nbPlaces; i++)
-	{
-		std::cout << listePlaces[i]->getNumeroPlace() << " - " ;
-	}
-	std::cout << std::endl;
 }

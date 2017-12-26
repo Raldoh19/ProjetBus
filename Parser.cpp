@@ -53,7 +53,7 @@ void Parser::setFile(string file)
 ListePlaces* Parser::generateParking()
 {
 	ListePlaces * parking = new ListePlaces();
-	ifstream fichier(this->file+"Emplacement.csv");
+	ifstream fichier(this->file);
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -66,7 +66,7 @@ ListePlaces* Parser::generateParking()
 				if(ligneDecoupe[2].length() == 0)
 					try
 					{
-						parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
+						parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
 					}
 					catch(invalid_argument ia)
 					{
@@ -74,7 +74,7 @@ ListePlaces* Parser::generateParking()
 				else
 					try
 					{
-					parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
+					parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
 					}
 					catch(invalid_argument ia)
 					{
@@ -92,7 +92,7 @@ ListePlaces* Parser::generateParking()
 vector<Vehicule> Parser::generateVehicules()
 {
 	vector<Vehicule> vehiculeGeneres;
-	ifstream fichier(this->file+"Vehicule.csv");
+	ifstream fichier(this->file);
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -122,7 +122,7 @@ vector<Vehicule> Parser::generateVehicules()
 vector<Mission> Parser::generateMissions()
 {
 	vector<Mission> missionsGeneres;
-	ifstream fichier(this->file+"Mission.csv");
+	ifstream fichier(this->file);
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -139,46 +139,6 @@ vector<Mission> Parser::generateMissions()
 		}
 		fichier.close();
 		return missionsGeneres;
-	}
-	else throw new exception("Impossible d'ouvrir le fichier!");
-}
-
-void Parser::generateTrajet(ListePlaces parking)
-{
-	ifstream fichier(this->file+"Trajet.csv");
-	string ligne;
-	if(fichier.is_open())
-	{
-		while(getline(fichier, ligne))
-		{
-			vector<string> ligneDecoupe;
-			int nombreElement = split(ligneDecoupe, ligne,';');
-			if(nombreElement == 3)
-			{
-				Place * placeConcerne = parking.recherchePlace(ligneDecoupe[0]);
-				string ES = ligneDecoupe[2];
-				ListePlaces * trajetPlace = new ListePlaces();
-				vector<string> placeDecoupe;
-				int nombrePlace = split(placeDecoupe, ligneDecoupe[1],',');
-				for(int i = 0;i < nombrePlace;i++)
-				{
-					try
-					{
-					Place * placeGenere = parking.recherchePlace(placeDecoupe[i]);
-					trajetPlace->ajouterPlace(placeGenere);
-					}catch(exception * e)
-					{
-					}
-				}
-				if(ES == "S")
-					placeConcerne->setPlaceSortie(trajetPlace);
-				else
-					placeConcerne->setPlaceAcces(trajetPlace);
-			}
-			else
-				throw new exception("Fichier CSV mal configure");
-		}
-		fichier.close();
 	}
 	else throw new exception("Impossible d'ouvrir le fichier!");
 }

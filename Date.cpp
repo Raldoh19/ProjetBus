@@ -36,6 +36,14 @@ bool Date::estEgale(Date d)
 	return (d.annee == this->annee && d.mois == this->mois && d.jour == this->jour && d.heure == this->heure && d.minutes == this->minutes);
 }
 	
+void Date::ajouterMinutes(int nbMinutes){
+	if( minutes + nbMinutes >=60){
+		++heure;
+		minutes = nbMinutes + minutes - 60;
+	}else{
+		minutes += nbMinutes;
+	}
+}
 Date::~Date(void)
 {
 
