@@ -1,11 +1,15 @@
 #include "Date.h"
-
+#include <iostream>
 Date::Date()
 {
 }
 
 Date::Date(int mn,int h,int j, int m, int a)
 {
+	if(mn > 60 || h > 23 || j > 31 || m > 12){
+		std::cout<<"Erreur dans la date"<<std::endl;
+		//throw 
+	}
 	minutes = mn;
 	heure = h;
 	jour = j;

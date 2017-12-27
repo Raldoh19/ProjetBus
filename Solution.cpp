@@ -1,35 +1,46 @@
 #include "Solution.h"
 
 
+using namespace std;
 bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitiale,Date dateFin){
 	Date dateCourante = dateInitiale;
-	std::vector<Vehicule> vehiculesABouger;
+	vector<pair<Vehicule*,int>> vehiculesABouger;
+	Vehicule* pBusEnCours;
+	unsigned int index,indexMission;
+	int idMission;
+
 	while(dateCourante.estAvant(dateFin)){
 		vehiculesABouger = chercheBusADeplacer(dateCourante);
 		if(vehiculesABouger.size() > 0){
+			for(index = 0; index < vehiculesABouger.size(); index++){
+				pBusEnCours = vehiculesABouger.at(index).first;
+				idMission = vehiculesABouger.at(index).second;
+				//CAS DE DEPART D'UN BUS 
+				if(pBusEnCours->getMissions().at(idMission).getDateDepart == dateCourante){
+					//Verifier si etatParking->listePlaces.at(NumDePlacesPourSortir) == -1
+				}
+				//CAS D'ARRIVEE D'UN BUS
+				else{
+					//Plus dur :((((((
+				}
 			
+			}
 
 		}
-
-		/*
-		Si un bus a une mission de depart / d'arrivee a dateCourante alors
-			LE BUT est de soit le faire sortir soit le faire se garer
-			Le faire sortir est assez simple, suffit de verifier qu'au moins 1 chemin pour sortir est vide de vehicules
-			
-
-		*/
-	
-	
-	
 	
 		dateCourante.ajouterMinutes(1);
 	}
+
+
 	
 	return true;
 }
 
-std::vector<Vehicule> Solution::chercheBusADeplacer(Date date){
-	std::vector<Vehicule> listeDesVehicules;
+//Methode qui renvoie un vecteur qui contient des couples (adresse de vehicule, entier)
+//											adresse de vehicule = l'adresse du vehicule qui doit bouger
+//											entier = ID de la mission qui le fait bouger
+vector<pair<Vehicule*,int>> Solution::chercheBusADeplacer(Date date){
+	vector<pair<Vehicule*,int>> listeDesVehicules;
 	unsigned int indexVehicules,indexMission;
 	//Pour tous les vehicules concernes
 	for(indexVehicules = 0; indexVehicules < nbVehiculesConcernes; indexVehicules++){
@@ -37,7 +48,7 @@ std::vector<Vehicule> Solution::chercheBusADeplacer(Date date){
 		for(indexMission = 0; indexMission < vehiculesConcernes[indexVehicules].getNbMissions();indexMission++){
 			//si l'heure de depart/arrive correspond a l'heure en cours, alors il va falloir deplacer le bus
 			if(vehiculesConcernes[indexVehicules].getMissions().at(indexMission).getDateArrivee().estEgale(date) || vehiculesConcernes[indexVehicules].getMissions().at(indexMission).getDateDepart().estEgale(date)){
-				listeDesVehicules.push_back(vehiculesConcernes[indexVehicules]);
+				listeDesVehicules.push_back(make_pair(&vehiculesConcernes[indexVehicules],indexMission));
 			}
 		}
 	}
