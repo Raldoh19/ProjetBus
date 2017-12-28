@@ -28,6 +28,8 @@ public:
 	void setNumeroVehicule(int numeroVehicule);
 	void setPlaceAcces(ListePlaces*);
 	void setPlaceSortie(ListePlaces*);
+	bool peutAcceder();
+	bool peutSortir();
 };
 
 #endif

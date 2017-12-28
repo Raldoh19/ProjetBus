@@ -60,6 +60,11 @@ void Place::afficher()
 		std::cout << " - LIBRE" << std::endl;
 	else
 		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
+
+	std:: cout << " Chemin d'accès: ";
+	this->placeAcces->afficher();
+	std:: cout << " Chemin de sortie: ";
+	this->placeSortie->afficher();
 }
 
 void Place::setPlaceAcces(ListePlaces * pa)
@@ -69,4 +74,24 @@ void Place::setPlaceAcces(ListePlaces * pa)
 void Place::setPlaceSortie(ListePlaces * ps)
 {
 	this->placeSortie = ps;
+}
+
+bool Place::peutAcceder()
+{
+	for(int i =0 ; i < this->placeAcces->getNbPlaces(); i++)
+	{
+		if(this->placeAcces->getPlace(i)->getNumeroVehicule() != -1)
+			return false;
+	}
+	return true;
+}
+
+bool Place::peutSortir()
+{
+	for(int i =0 ; i < this->placeSortie->getNbPlaces(); i++)
+	{
+		if(this->placeSortie->getPlace(i)->getNumeroVehicule() != -1)
+			return false;
+	}
+	return true;
 }
