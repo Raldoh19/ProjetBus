@@ -16,6 +16,13 @@ public:
 	bool estAvant(Date d);
 	bool estApres(Date d);
 	bool estEgale(Date d);
+
+	void ajouterMinute(int);
+	void ajouterHeure(int);
+	void ajouterJour(int);
+	void ajouterMois(int);
+	void ajouterAnnee(int);
+
 	std::string toString();
 	~Date(void);
 };
