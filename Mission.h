@@ -15,6 +15,8 @@ public:
 	int getID();
 	Date getDateArrivee();
 	Date getDateDepart();
+	bool operator<(const Mission& st);
+	void afficher();
 };
 
 #endif

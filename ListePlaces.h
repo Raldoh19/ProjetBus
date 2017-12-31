@@ -22,6 +22,7 @@ public:
 	void supprimerPlace(Place *p);
 	void afficherListePlaces();
 	void afficher();
+	void afficherSuite();
 	Place * recherchePlace(std::string placeCherche);
 
 };

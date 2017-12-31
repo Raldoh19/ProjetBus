@@ -60,11 +60,10 @@ void Place::afficher()
 		std::cout << " - LIBRE" << std::endl;
 	else
 		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
-
 	std:: cout << " Chemin d'accès: ";
-	this->placeAcces->afficher();
+	this->placeAcces->afficherSuite();
 	std:: cout << " Chemin de sortie: ";
-	this->placeSortie->afficher();
+	this->placeSortie->afficherSuite();
 }
 
 void Place::setPlaceAcces(ListePlaces * pa)

@@ -34,11 +34,12 @@ void Vehicule::ajouterMission(Mission m){
 
 }
 
-void Vehicule::afficherMissions(){
-	int i;
-	std::cout<<"Missions pour le bus " << ID << " : " <<std::endl;
-	for(i = 0; i < nbMissions; i++){
-		std::cout<<"	Mission " << missions[i].getID() << " : dateArr " << missions[i].getDateArrivee().toString() << " dateDep " << missions[i].getDateDepart().toString() << std::endl;
+void Vehicule::afficherMissions()
+{
+	std::cout << "Mission du bus " << ID << " : " << std::endl;
+	for(int i = 0; i <  missions.size() ; i++)
+	{
+		missions[i].afficher();
 	}
 }
 
@@ -60,4 +61,12 @@ void Vehicule::retirerMission(Mission m)
         missions.erase(missions.begin() + i);
         nbMissions--;
     }
+}
+
+std::vector<Mission> Vehicule::getMissions(){
+	return missions;
+}
+
+int Vehicule::getNbMissions(){
+	return nbMissions;
 }

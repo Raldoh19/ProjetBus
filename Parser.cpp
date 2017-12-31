@@ -50,48 +50,83 @@ void Parser::setFile(string file)
 	this->file= file;
 }
 
-ListePlaces* Parser::generateParking()
+ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*> buses)
 {
 	ListePlaces * parking = new ListePlaces();
 	ifstream fichier(this->file+"Emplacement.csv");
 	string ligne;
 	if(fichier.is_open())
 	{
+		int indiceVehicule = 0;
 		while(getline(fichier, ligne))
 		{
 			vector<string> ligneDecoupe;
 			int nombreElement = split(ligneDecoupe, ligne, ';');
-			if(nombreElement == 3)
+			if(nombreElement >= 3)
 			{
 				if(ligneDecoupe[2].length() == 0)
+				{
 					try
 					{
-						parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
+						parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1])));
 					}
 					catch(invalid_argument ia)
 					{
 					}
+				}
 				else
+				{
 					try
 					{
-					parking->ajouterPlace(Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
+						int numeroMission = stoi(ligneDecoupe[2]);
+						for(int i = 0; i < missions.size(); i++)
+						{
+							if(missions[i].getID() == numeroMission)
+							{
+								if(indiceVehicule >= buses.size())
+								{
+									bool madeIt = false;
+									int j = 0;
+									while(j < buses.size() && madeIt == false)
+									{
+										Mission curMission = buses[j]->getMissions()[buses[j]->getMissions().size()-1];
+										if(curMission.getDateArrivee().estAvant(missions[i].getDateDepart()))
+										{
+											buses[j]->ajouterMission(missions[i]);
+											parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[j]->getID()));
+											madeIt = true;
+											break;
+										}
+										j++;
+									}
+								}
+								else
+								{
+									buses[indiceVehicule]->ajouterMission(missions[i]);
+									parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[indiceVehicule]->getID()));
+									indiceVehicule++;
+								}
+								break;
+							}
+						}
 					}
 					catch(invalid_argument ia)
 					{
 					}
+				}
 			}
 			else
-				throw new exception("Fichier CSV mal configure");
+				throw new exception("[Parking] Fichier CSV mal configure");
 		}
 		fichier.close();
 		return parking;
 	}
-	else throw new exception("Impossible d'ouvrir le fichier!");
+	else throw new exception("[Parking] Impossible d'ouvrir le fichier!");
 }
 
-vector<Vehicule> Parser::generateVehicules()
+vector<Vehicule*> Parser::generateVehicules()
 {
-	vector<Vehicule> vehiculeGeneres;
+	vector<Vehicule*> vehiculeGeneres;
 	ifstream fichier(this->file+"Vehicule.csv");
 	string ligne;
 	if(fichier.is_open())
@@ -100,11 +135,11 @@ vector<Vehicule> Parser::generateVehicules()
 		{
 			vector<string> ligneDecoupe;
 			int nombreElement = split(ligneDecoupe, ligne,';');
-			if(nombreElement == 5)
+			if(nombreElement >= 5)
 			{
 				try
 				{
-				vehiculeGeneres.push_back(Vehicule(stoi(ligneDecoupe[0]), stoi(ligneDecoupe[2])));
+				vehiculeGeneres.push_back(new Vehicule(stoi(ligneDecoupe[0]), stoi(ligneDecoupe[2])));
 				}
 				catch(invalid_argument ia)
 				{
@@ -130,12 +165,16 @@ vector<Mission> Parser::generateMissions()
 		{
 			vector<string> ligneDecoupe;
 			int nombreElement = split(ligneDecoupe, ligne,';');
-			if(nombreElement == 9)
+			if(nombreElement >= 9)
 			{
-				missionsGeneres.push_back(Mission(stoi(ligneDecoupe[0]), createDate(ligneDecoupe[2]), createDate(ligneDecoupe[1])));
+				Date dateDepart = createDate(ligneDecoupe[1]);
+				Date dateArrivee = createDate(ligneDecoupe[2]);
+				if(dateArrivee.estAvant(dateDepart))
+					dateArrivee.ajouterJour(1);
+				missionsGeneres.push_back(Mission(stoi(ligneDecoupe[0]), dateArrivee, dateDepart));
 			}
 			else
-				throw new exception("Fichier CSV mal configure");
+				throw new exception("[Mission] Fichier CSV mal configure");
 		}
 		fichier.close();
 		return missionsGeneres;
@@ -153,25 +192,37 @@ void Parser::generateTrajet(ListePlaces parking)
 		{
 			vector<string> ligneDecoupe;
 			int nombreElement = split(ligneDecoupe, ligne,';');
-			if(nombreElement == 3)
+			if(nombreElement >= 3)
 			{
-				string PlaceConcerne = ligneDecoupe[0];
-				string ES = ligneDecoupe[2];
-				ListePlaces trajetPlace = ListePlaces();
-				vector<string> placeDecoupe;
-				int nombrePlace = split(placeDecoupe, ligne,',');
-				for(int i = 0;i < nombrePlace;i++)
+				try
 				{
-					Place placeGenere = parking.recherchePlace(placeDecoupe[i]);
-					trajetPlace.ajouterPlace(placeGenere);
+					Place * placeConcerne = parking.recherchePlace(ligneDecoupe[0]);
+					string ES = ligneDecoupe[2];
+					ListePlaces * trajetPlace = new ListePlaces();
+					vector<string> placeDecoupe;
+					int nombrePlace = split(placeDecoupe, ligneDecoupe[1],',');
+					for(int i = 0;i < nombrePlace;i++)
+					{
+						try
+						{
+						Place * placeGenere = parking.recherchePlace(placeDecoupe[i]);
+						trajetPlace->ajouterPlace(placeGenere);
+						}catch(exception * e)
+						{
+						}
+					}
+					if(ES == "S")
+						placeConcerne->setPlaceSortie(trajetPlace);
+					else
+						placeConcerne->setPlaceAcces(trajetPlace);
 				}
-				if(ES == "S")
-					parking.recherchePlace(PlaceConcerne).setPlaceSortie(&trajetPlace);
-				else
-					parking.recherchePlace(PlaceConcerne).setPlaceAcces(&trajetPlace);
+				catch(exception e)
+				{
+					std::cout << ligneDecoupe[0] << "ne figure pas dans le parking !" << std::endl;
+				}
 			}
 			else
-				throw new exception("Fichier CSV mal configure");
+				throw new exception("[Trajet] Fichier CSV mal configure");
 		}
 		fichier.close();
 	}

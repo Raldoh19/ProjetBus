@@ -64,14 +64,24 @@ Place* ListePlaces::recherchePlace(std::string placeCherche)
 		if(listePlaces[i]->getNumeroPlace() == placeCherche)
 			return listePlaces[i];
 	}
-	throw new exception("Erreur de configuration dans le fichier CSV !");
+	ajouterPlace(new Place(placeCherche,-1));
+	return listePlaces[listePlaces.size()-1];
 }
 
 void ListePlaces::afficher()
 {
 	for(int i =0 ; i < nbPlaces; i++)
 	{
-		std::cout << listePlaces[i]->getNumeroPlace() << " - " ;
+		listePlaces[i]->afficher();
+	}
+	std::cout << std::endl;
+}
+
+void ListePlaces::afficherSuite()
+{
+	for(int i =0 ; i < nbPlaces; i++)
+	{
+		std::cout << this->listePlaces[i]->getNumeroPlace() << " - ";
 	}
 	std::cout << std::endl;
 }

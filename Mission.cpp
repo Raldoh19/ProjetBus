@@ -1,5 +1,5 @@
 #include "Mission.h"
-
+#include <iostream>
 
 Mission::Mission()
 {
@@ -30,4 +30,17 @@ Date Mission::getDateArrivee()
 Date Mission::getDateDepart()
 {
 	return dateDepart;
+}
+
+bool Mission::operator<(const Mission& mission)
+{
+	return this->dateDepart.estAvant(mission.dateDepart);
+}
+
+void Mission::afficher()
+{
+	std::cout << 
+		"\t\t[" << ID << "]" << std::endl << 
+		"\tDate debut: " << dateDepart.toString() << std::endl <<
+		"\tDate arrivee : " << dateArrivee.toString() << std::endl;
 }
