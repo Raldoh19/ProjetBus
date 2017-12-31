@@ -53,6 +53,14 @@ void Place::setNumeroVehicule(int numeroVehicule){
 	this->numeroVehicule = numeroVehicule;
 }
 
+ListePlaces* Place::getPlaceAcces(){
+	return placeAcces;
+}
+
+ListePlaces* Place::getPlaceSortie(){
+	return placeSortie;
+}
+
 void Place::afficher()
 {
 	std::cout << "Place numero: " << this->numeroPlace;

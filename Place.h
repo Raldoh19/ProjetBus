@@ -26,6 +26,10 @@ public:
 	void setNumeroPlace(string num);
 	void setTaillePlace(int taille);
 	void setNumeroVehicule(int numeroVehicule);
+	ListePlaces* getPlaceAcces();
+	ListePlaces* getPlaceSortie();
+
+
 };
 
 #endif

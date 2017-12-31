@@ -19,6 +19,8 @@ public:
 	void ajouterPlace(Place p);
 	void supprimerPlace(Place p);
 	void afficherListePlaces();
+	std::vector<Place> getListePlaces();
+
 };
 
 #endif

@@ -12,6 +12,10 @@ ListePlaces::~ListePlaces(void)
 
 }
 
+std::vector<Place> ListePlaces::getListePlaces(){
+	return listePlaces;
+}
+
 ListePlaces::ListePlaces(int nb)
 {
 	listePlaces.reserve(nb);

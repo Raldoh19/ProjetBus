@@ -17,6 +17,8 @@ public:
 
 	ListePlaces nouveauParking();
 	bool verificationSolution(ListePlaces parkingInitial, Date dateInitiale,Date dateFin);
-	std::vector<pair<Vehicule*,int>> chercheBusADeplacer(Date date);
+	std::vector<std::pair<Vehicule*,int>> chercheBusADeplacer(Date date);
+	std::vector<Place*> getPlacesVides(ListePlaces parking);
+	bool peutSeGarer(Place p);
 };
 #endif;
