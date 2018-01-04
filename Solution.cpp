@@ -9,7 +9,7 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 	unsigned int index,indexMission;
 	int idMission;
 
-	while(dateCourante.estAvant(dateFin)){
+	while(dateCourante.estAvant(dateFin) || dateCourante.estEgale(dateFin)){
 		//Plutot parcourir les places et voir celles qui ont un bus qui va arriver / partir ? 
 		//si 2 bus doivent partir / arriver en meme temps il faut trouver un ordre pour qu'ils ne se bloquent pas
 		vehiculesABouger = chercheBusADeplacer(dateCourante);
@@ -21,7 +21,7 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 				if(pBusEnCours->getMissions().at(idMission).getDateDepart().estEgale(dateCourante)){
 					Place* placeEnCours = etatParking.getListePlaces().at(placeDuBus(pBusEnCours->getID()));
 					if(peutPartir(*placeEnCours)){
-						std::cout<<"Le bus part "<<std::endl;
+						placeEnCours->setNumeroVehicule(-1);
 					}
 					
 				}
@@ -50,8 +50,10 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 
 /*
 	Methodes TODO : 
-		- void placesEligibles(vector<Place*>* placesPotentielles)
-*/
+		- void placesEligibles(vector<string>* placesVides) : modifie placesVides pour ne garder que les places où l'on peut se garer.
+		Comment savoir si le bus pourra partir ? il faut regarder les places de sortie, si elle est occupée, voir si le bus dessus a une mission avec dateDepart avant la prochaine mission du bus qui se gare
+		un beau petit bordel quoi :(((((((((
+		*/
 
 int Solution::placeDuBus(int id){
 	unsigned int i = 0;
@@ -71,7 +73,9 @@ int Solution::placeDuBus(int id){
 */
 bool Solution::peutPartir(Place p){
 	int i=0;
-
+	if(p.getPlaceSortie() == NULL){
+		return true;
+	}
 	while(i < p.getPlaceSortie()->getNbPlaces()){
 		if(p.getPlaceAcces()->getListePlaces().at(i)->getNumeroVehicule() != -1){
 			return false;
@@ -85,7 +89,9 @@ bool Solution::peutPartir(Place p){
 */
 bool Solution::peutSeGarer(Place p){
 	int i=0;
-
+	if(p.getPlaceAcces() == NULL){
+		return true;
+	}
 	while(i < p.getPlaceAcces()->getNbPlaces()){
 		if(p.getPlaceAcces()->getListePlaces().at(i)->getNumeroVehicule() != -1){
 			return false;

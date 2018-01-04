@@ -15,8 +15,10 @@ public:
 	Solution(void){}
 	~Solution(void){}
 
-	Solution(ListePlaces parking){
+	Solution(ListePlaces parking,Vehicule* vehicules,unsigned int nb){
 		etatParking = parking;
+		vehiculesConcernes = vehicules;
+		nbVehiculesConcernes = nb;
 	}
 
 	ListePlaces nouveauParking();

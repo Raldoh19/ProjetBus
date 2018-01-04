@@ -44,18 +44,21 @@ int main(int argc, char* argv[])
 	ListePlaces parking = ListePlaces();
 	parking.ajouterPlace(&place1);
 
-	Mission m1 = Mission(0,Date(10,10,10,10,2010),Date(10,11,10,10,2010));
+	Mission m1 = Mission(0,Date(10,9,10,10,2010),Date(10,10,10,10,2010));
 	Vehicule bus1 = Vehicule(0,1);
 	bus1.ajouterMission(m1);
 
+	//LE BUS1 EST GARE SUR LA PLACE 1
+	place1.setNumeroVehicule(bus1.getID());
 	parking.afficherListePlaces();
-	bus1.afficherMissions();
+	
 
-	Solution solver = Solution();
+	Solution solver = Solution(parking,&bus1,1);
 	vector<string> placesVides = solver.getPlacesVides(parking);
+	solver.verificationSolution(parking,Date(10,10,10,10,2010),Date(11,10,10,10,2010));
 
-	cout<<"places vides : "<< placesVides.at(0) << endl;
-		
+	parking.afficherListePlaces();
+	
 	system("pause");
 	return 0;
 }
