@@ -19,9 +19,11 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 				idMission = vehiculesABouger.at(index).second;
 				//CAS DE DEPART D'UN BUS 
 				if(pBusEnCours->getMissions().at(idMission).getDateDepart().estEgale(dateCourante)){
-					//trouver la place qu'occupe le bus (place[i].idBus == pBusEnCours->id)
-					//Verifier si etatParking->listePlaces.at(NumDePlacesPourSortir) == -1
-					//
+					Place* placeEnCours = &etatParking.getListePlaces().at(placeDuBus(pBusEnCours->getID()));
+					if(peutPartir(*placeEnCours)){
+						std::cout<<"Le bus part "<<std::endl;
+					}
+					
 				}
 				//CAS D'ARRIVEE D'UN BUS
 				else{
@@ -48,11 +50,36 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 
 /*
 	Methodes TODO : 
-		- vector<Place*> getPlacesVides(ListePlace parking);
-		- bool peutSeGarer(Place p);
 		- void placesEligibles(vector<Place*>* placesPotentielles)
 */
 
+int Solution::placeDuBus(int id){
+	unsigned int i = 0;
+
+	while(i < etatParking.getNbPlaces()){
+		if(etatParking.getListePlaces().at(i).getNumeroVehicule() == id){
+			return i;
+		}
+		i++;
+	}
+	return -1;
+}
+
+
+/*
+	Verifie qu'on peut partir de la place p
+*/
+bool Solution::peutPartir(Place p){
+	int i=0;
+
+	while(i < p.getPlaceSortie()->getNbPlaces()){
+		if(p.getPlaceAcces()->getListePlaces().at(i).getNumeroVehicule() != -1){
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
 /*
 	Verifie qu'une place est accessible
 */
@@ -70,17 +97,18 @@ bool Solution::peutSeGarer(Place p){
 /*
 	Parcours un parking, recupere les adresses des places vides de ce parking
 */
-vector<Place*> Solution::getPlacesVides(ListePlaces parking){
-	vector<Place*> placesVides;
-	Place* p;
+vector<string> Solution::getPlacesVides(ListePlaces parking){
+	vector<string> idPlacesVides;
 	unsigned int i;
+	Place p;
 	for(i = 0; i < parking.getNbPlaces(); i++){
-		p = &parking.getListePlaces().at(i);
-		if(p->getNumeroVehicule() == -1){
-			placesVides.push_back(p);
+		p = parking.getListePlaces().at(i);
+		if(p.getNumeroVehicule() == -1){
+			idPlacesVides.push_back(p.getNumeroPlace());
 		}
+		
 	}
-	return placesVides;
+	return idPlacesVides;
 }
 
 
