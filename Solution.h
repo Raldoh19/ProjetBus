@@ -1,24 +1,31 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 
-#include <vector>
 #include "Vehicule.h"
 #include "ListePlaces.h"
-
+#include <string>
 class Solution
 {
 private:
-	std::vector<Vehicule> vehiculesConcernes;
+	Vehicule* vehiculesConcernes;
+	unsigned int nbVehiculesConcernes;
 	ListePlaces etatParking;
+	
 public:
-	Solution(void);
-	Solution(std::vector<Vehicule>, ListePlaces);
-	~Solution(void);
+	Solution(void){}
+	~Solution(void){}
 
-	ListePlaces nouveauParking(Date dateDebut, Date dateFin);
+	Solution(ListePlaces parking){
+		etatParking = parking;
+	}
+
+	ListePlaces nouveauParking();
 	bool verificationSolution(ListePlaces parkingInitial, Date dateInitiale,Date dateFin);
 	std::vector<std::pair<Vehicule*,int>> chercheBusADeplacer(Date date);
-
+	std::vector<std::string> getPlacesVides(ListePlaces parking);
+	bool peutSeGarer(Place p);
+	bool peutPartir(Place p);
+	int placeDuBus(int id);
 };
+#endif;
 
-#endif

@@ -15,6 +15,7 @@ public:
 	Parser(void);
 	Parser(string);
 	void setFile(string);
+
 	ListePlaces * generateParking(vector<Mission>, vector<Vehicule*>);
 	void generateTrajet(ListePlaces);
 	vector<Vehicule*> generateVehicules();

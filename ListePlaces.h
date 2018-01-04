@@ -21,9 +21,13 @@ public:
 	void ajouterPlace(Place *p);
 	void supprimerPlace(Place *p);
 	void afficherListePlaces();
+
 	void afficher();
 	void afficherSuite();
 	Place * recherchePlace(std::string placeCherche);
+
+	std::vector<Place*> getListePlaces();
+
 
 };
 

@@ -53,7 +53,7 @@ void Parser::setFile(string file)
 ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*> buses)
 {
 	ListePlaces * parking = new ListePlaces();
-	ifstream fichier(this->file+"Emplacement.csv");
+	ifstream fichier(this->file);
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -126,8 +126,10 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 
 vector<Vehicule*> Parser::generateVehicules()
 {
+
 	vector<Vehicule*> vehiculeGeneres;
 	ifstream fichier(this->file+"Vehicule.csv");
+
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -157,7 +159,7 @@ vector<Vehicule*> Parser::generateVehicules()
 vector<Mission> Parser::generateMissions()
 {
 	vector<Mission> missionsGeneres;
-	ifstream fichier(this->file+"Mission.csv");
+	ifstream fichier(this->file);
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -181,6 +183,7 @@ vector<Mission> Parser::generateMissions()
 	}
 	else throw new exception("Impossible d'ouvrir le fichier!");
 }
+
 
 void Parser::generateTrajet(ListePlaces parking)
 {
@@ -228,6 +231,7 @@ void Parser::generateTrajet(ListePlaces parking)
 	}
 	else throw new exception("Impossible d'ouvrir le fichier!");
 }
+
 
 Parser::~Parser(void)
 {

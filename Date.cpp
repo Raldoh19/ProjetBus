@@ -7,6 +7,10 @@ Date::Date()
 
 Date::Date(int mn,int h,int j, int m, int a)
 {
+	if(mn > 60 || h > 23 || j > 31 || m > 12){
+		std::cout<<"Erreur dans la date"<<std::endl;
+		//throw 
+	}
 	minutes = mn;
 	heure = h;
 	jour = j;
@@ -37,6 +41,14 @@ bool Date::estEgale(Date d)
 	return (d.annee == this->annee && d.mois == this->mois && d.jour == this->jour && d.heure == this->heure && d.minutes == this->minutes);
 }
 	
+void Date::ajouterMinutes(int nbMinutes){
+	if( minutes + nbMinutes >=60){
+		++heure;
+		minutes = nbMinutes + minutes - 60;
+	}else{
+		minutes += nbMinutes;
+	}
+}
 Date::~Date(void)
 {
 

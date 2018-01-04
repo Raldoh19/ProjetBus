@@ -53,6 +53,14 @@ void Place::setNumeroVehicule(int numeroVehicule){
 	this->numeroVehicule = numeroVehicule;
 }
 
+ListePlaces* Place::getPlaceAcces(){
+	return placeAcces;
+}
+
+ListePlaces* Place::getPlaceSortie(){
+	return placeSortie;
+}
+
 void Place::afficher()
 {
 	std::cout << "Place numero: " << this->numeroPlace;
@@ -60,6 +68,7 @@ void Place::afficher()
 		std::cout << " - LIBRE" << std::endl;
 	else
 		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
+
 	std:: cout << " Chemin d'accès: ";
 	this->placeAcces->afficherSuite();
 	std:: cout << " Chemin de sortie: ";
@@ -93,4 +102,5 @@ bool Place::peutSortir()
 			return false;
 	}
 	return true;
+
 }

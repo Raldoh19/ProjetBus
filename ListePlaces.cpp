@@ -12,6 +12,10 @@ ListePlaces::~ListePlaces(void)
 
 }
 
+std::vector<Place*> ListePlaces::getListePlaces(){
+	return listePlaces;
+}
+
 ListePlaces::ListePlaces(int nb)
 {
 	listePlaces.reserve(nb);
@@ -31,7 +35,7 @@ void ListePlaces::ajouterPlace(Place *p)
 
 void ListePlaces::supprimerPlace(Place *p)
 {
-    int i = 0;
+    unsigned int i = 0;
 
     while( i < nbPlaces && (p->getNumeroPlace().compare(listePlaces[i]->getNumeroPlace()) == -1))
 	{
@@ -51,11 +55,12 @@ void ListePlaces::supprimerPlace(Place *p)
 
 void ListePlaces::afficherListePlaces()
 {
-	for(int i =0 ; i < nbPlaces; i++)
+	for(unsigned int i =0 ; i < nbPlaces; i++)
 	{
 		listePlaces[i]->afficher();
 	}
 }
+
 
 Place* ListePlaces::recherchePlace(std::string placeCherche)
 {
@@ -94,3 +99,4 @@ Place * ListePlaces::getPlace(int indice)
 	}
 	throw exception("Place introuvable !");
 }
+

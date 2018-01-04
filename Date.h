@@ -24,6 +24,7 @@ public:
 	void ajouterAnnee(int);
 
 	std::string toString();
+	void ajouterMinutes(int nbMinutes);
 	~Date(void);
 };
 
