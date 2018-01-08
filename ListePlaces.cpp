@@ -92,6 +92,18 @@ void ListePlaces::afficherSuite()
 	std::cout << std::endl;
 }
 
+
+Place * ListePlaces::getPlaceIndex(int index)
+{
+	if ((index >= this->nbPlaces) || (index < 0))
+	{
+		throw exception("Place introuvable !");
+	}
+	else
+	{
+		return listePlaces.at(index);
+	}
+}
 Place * ListePlaces::getPlace(std::string numero)
 {
 	unsigned int i = 0;
@@ -104,3 +116,15 @@ Place * ListePlaces::getPlace(std::string numero)
 	throw exception("Place introuvable !");
 }
 
+Place * ListePlaces::getPlaceVehicule(int numeroVehicule)
+{
+	unsigned int i = 0;
+	for(int i = 0; i< this->listePlaces.size() ; i++) 
+	{
+		if(listePlaces[i]->getNumeroVehicule() == numeroVehicule)
+		{
+			return listePlaces[i];
+		}
+	}
+	return NULL;
+}

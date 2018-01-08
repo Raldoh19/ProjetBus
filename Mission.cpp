@@ -9,8 +9,16 @@ Mission::Mission()
 Mission::Mission(int id, Date dateArr, Date dateDep)
 {
 	this->ID = id;
-	dateArrivee = dateArr;
-	dateDepart = dateDep;
+	if(dateArr.estApres(dateDep))
+	{
+		dateArrivee = dateArr;
+		dateDepart = dateDep;
+	}
+	else
+	{
+		dateArrivee = dateDep;
+		dateDepart = dateArr;
+	}
 }
 
 Mission::~Mission()

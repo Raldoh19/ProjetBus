@@ -25,7 +25,8 @@ public:
 	void afficher();
 	void afficherSuite();
 	Place * recherchePlace(std::string placeCherche);
-
+	Place * getPlaceVehicule(int numeroVehicule);
+	Place * getPlaceIndex(int index);
 	std::vector<Place*> getListePlaces();
 
 
