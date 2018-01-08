@@ -31,7 +31,6 @@ public:
 	void setPlaceSortie(ListePlaces*);
 	bool peutAcceder();
 	bool peutSortir();
-
 	ListePlaces* getPlaceAcces();
 	ListePlaces* getPlaceSortie();
 

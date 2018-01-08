@@ -3,6 +3,7 @@
 
 #include "Vehicule.h"
 #include "ListePlaces.h"
+#include "Caracteristique.h"
 #include <string>
 class Solution
 {
@@ -10,7 +11,7 @@ private:
 	Vehicule* vehiculesConcernes;
 	unsigned int nbVehiculesConcernes;
 	ListePlaces etatParking;
-	
+	std::vector<Caracteristique> caracteristiques;
 public:
 	Solution(void){}
 	~Solution(void){}
@@ -21,13 +22,20 @@ public:
 		nbVehiculesConcernes = nb;
 	}
 
+
 	ListePlaces nouveauParking();
-	bool verificationSolution(ListePlaces parkingInitial, Date dateInitiale,Date dateFin);
+	std::vector<Caracteristique> getCaracteristiques();
+	std::vector<Caracteristique> trierCaracteristiques(std::vector<Caracteristique> caracteristiques);
+	bool verificationSolution(Solution solution,ListePlaces parkingInitial);
 	std::vector<std::pair<Vehicule*,int>> chercheBusADeplacer(Date date);
 	std::vector<std::string> getPlacesVides(ListePlaces parking);
 	bool peutSeGarer(Place p);
 	bool peutPartir(Place p);
 	int placeDuBus(int id);
+	void placesEligibles(std::vector<std::string>* placesVide);
+	Place* trouverPlaceNumero(std::string numero);
+
+	bool pourraPartir(Place p,Date date);
 };
 #endif;
 

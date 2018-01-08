@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 int main(int argc, char* argv[])
 {
 	
@@ -53,12 +54,8 @@ int main(int argc, char* argv[])
 	parking.afficherListePlaces();
 	
 
-	Solution solver = Solution(parking,&bus1,1);
-	vector<string> placesVides = solver.getPlacesVides(parking);
-	solver.verificationSolution(parking,Date(10,10,10,10,2010),Date(11,10,10,10,2010));
 
-	parking.afficherListePlaces();
-	
+
 	system("pause");
 	return 0;
 }

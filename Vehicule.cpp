@@ -70,3 +70,15 @@ std::vector<Mission> Vehicule::getMissions(){
 int Vehicule::getNbMissions(){
 	return nbMissions;
 }
+
+Date Vehicule::premierDepartApres(Date date){
+	unsigned int i,indiceMin = 0;
+	
+	for(i=0;i<missions.size();i++){
+		if(missions[i].getDateDepart().estAvant(missions[indiceMin].getDateDepart())){
+			indiceMin = i;
+		}
+	}
+
+	return missions[indiceMin].getDateDepart();
+}

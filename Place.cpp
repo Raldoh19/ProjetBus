@@ -1,6 +1,6 @@
 #include "Place.h"
 #include "ListePlaces.h"
-
+#include "Date.h"
 Place::Place()
 {
 
@@ -86,21 +86,28 @@ void Place::setPlaceSortie(ListePlaces * ps)
 
 bool Place::peutAcceder()
 {
+	if(placeAcces == NULL){
+		return true;
+	}
 	for(int i =0 ; i < this->placeAcces->getNbPlaces(); i++)
 	{
-		if(this->placeAcces->getPlace(i)->getNumeroVehicule() != -1)
+		if(this->placeAcces->getPlace(std::to_string(i))->getNumeroVehicule() != -1)
 			return false;
 	}
+
 	return true;
 }
 
 bool Place::peutSortir()
 {
+	if(placeSortie == NULL){
+		return true;
+	}
 	for(int i =0 ; i < this->placeSortie->getNbPlaces(); i++)
 	{
-		if(this->placeSortie->getPlace(i)->getNumeroVehicule() != -1)
+		if(this->placeSortie->getPlace(std::to_string(i))->getNumeroVehicule() != -1)
 			return false;
 	}
 	return true;
-
 }
+

@@ -16,7 +16,7 @@ public:
 	ListePlaces(void);
 	~ListePlaces(void);
 	ListePlaces(int nb);
-	Place * getPlace(int indice);
+	Place * getPlace(std::string numero);
 	int getNbPlaces();
 	void ajouterPlace(Place *p);
 	void supprimerPlace(Place *p);

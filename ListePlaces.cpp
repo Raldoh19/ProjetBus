@@ -73,6 +73,7 @@ Place* ListePlaces::recherchePlace(std::string placeCherche)
 	return listePlaces[listePlaces.size()-1];
 }
 
+
 void ListePlaces::afficher()
 {
 	for(int i =0 ; i < nbPlaces; i++)
@@ -91,11 +92,14 @@ void ListePlaces::afficherSuite()
 	std::cout << std::endl;
 }
 
-Place * ListePlaces::getPlace(int indice)
+Place * ListePlaces::getPlace(std::string numero)
 {
-	if(indice >= 0 && indice < nbPlaces)
-	{
-		return this->listePlaces[indice];
+	unsigned int i = 0;
+	while( i < listePlaces.size()){
+		if(listePlaces.at(i)->getNumeroPlace().compare(numero) == 0){
+			return listePlaces.at(i);
+		}
+		i++;
 	}
 	throw exception("Place introuvable !");
 }
