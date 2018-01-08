@@ -1,6 +1,9 @@
 #include "Vehicule.h"
 #include <stdlib.h>
 #include <iostream>
+#include <algorithm>
+
+
 
 Vehicule::Vehicule(int id, int taille){
 	ID = id;
@@ -28,10 +31,11 @@ void Vehicule::setTailleVehicule(int taille){
 	tailleVehicule = taille;
 }
 
-void Vehicule::ajouterMission(Mission m){
+void Vehicule::ajouterMission(Mission m)
+{
 	missions.push_back(m);
 	nbMissions++;
-
+	std::sort(missions.begin(), missions.end());
 }
 
 void Vehicule::afficherMissions()
@@ -60,6 +64,7 @@ void Vehicule::retirerMission(Mission m)
 	{
         missions.erase(missions.begin() + i);
         nbMissions--;
+		std::sort(missions.begin(), missions.end());
     }
 }
 
@@ -69,4 +74,16 @@ std::vector<Mission> Vehicule::getMissions(){
 
 int Vehicule::getNbMissions(){
 	return nbMissions;
+}
+
+Date Vehicule::premierDepartApres(Date date){
+	unsigned int i,indiceMin = 0;
+	
+	for(i=0;i<missions.size();i++){
+		if(missions[i].getDateDepart().estAvant(missions[indiceMin].getDateDepart())){
+			indiceMin = i;
+		}
+	}
+
+	return missions[indiceMin].getDateDepart();
 }

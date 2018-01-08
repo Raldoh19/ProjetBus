@@ -21,6 +21,7 @@ public:
 	void ajouterMission(Mission m);
 	void retirerMission(Mission m);
 	void afficherMissions();
+	Date premierDepartApres(Date date);
 	std::vector<Mission> getMissions();
 	int getNbMissions();
 };

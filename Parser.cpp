@@ -53,7 +53,7 @@ void Parser::setFile(string file)
 ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*> buses)
 {
 	ListePlaces * parking = new ListePlaces();
-	ifstream fichier(this->file);
+	ifstream fichier(this->file+"Emplacement.csv");
 	string ligne;
 	if(fichier.is_open())
 	{
@@ -159,7 +159,7 @@ vector<Vehicule*> Parser::generateVehicules()
 vector<Mission> Parser::generateMissions()
 {
 	vector<Mission> missionsGeneres;
-	ifstream fichier(this->file);
+	ifstream fichier(this->file+"Mission.csv");
 	string ligne;
 	if(fichier.is_open())
 	{

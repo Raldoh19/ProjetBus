@@ -71,10 +71,10 @@ void Date::ajouterMinute(int minutes)
 void Date::ajouterHeure(int heure)
 {
 	this->heure = this->heure + heure;
-	if(this->heure >= 24)
+	if(this->heure == 24)
 	{
-		this->ajouterJour(this->heure/24);
-		this->heure = this->heure % 24;
+		this->ajouterJour(1);
+		this->heure = 0;
 	}
 }
 

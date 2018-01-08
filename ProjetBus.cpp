@@ -10,53 +10,57 @@
 
 using namespace std;
 
+
 int main(int argc, char* argv[])
 {
 	
-	/*try
+	try
 	{
 
-		Date debut = Date(0,5,28,12,2017);
-		Date fin = Date(0,1,29,12,2017);
+		Date debut = Date(0,5,14,12,2017);
+		Date fin = Date(59,23,14,12,2017);
 		Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
 		vector<Vehicule*> buses = parser.generateVehicules();
 		vector<Mission> missions = parser.generateMissions();
 		ListePlaces * parking = parser.generateParking(missions, buses);
 		parser.generateTrajet(*parking);
-		for(int i = 0 ; i < buses.size(); i++)
-		ListePlaces * parking = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Emplacement.csv").generateParking();
-		vector<Vehicule> buses = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Vehicule.csv").generateVehicules();
-		vector<Mission> missions = Parser("F:\\ProjetVisualStudio\\ProjetBus\\DonneesBus\\entrees_bus_petit_volume\\Mission.csv").generateMissions();
+		vector<Vehicule> busConcerne;
 		for(unsigned int i =0; i<buses.size(); i ++)
-
 		{
-			buses[i]->afficherMissions();
+			busConcerne.push_back(*(buses[i]));
 		}
-		//Solution(buses, *(parking)).nouveauParking(debut, fin);
+		system("pause");
+		Solution s1(*(parking), busConcerne);
+		s1.nouveauParking(debut, fin);
+		system("pause");
 	}
 	catch(exception * e)
 	{
 		cout << e->what() << endl;
-	}*/
+	}
 
-
+	/*
 	Place place1 = Place("01",1);
 	ListePlaces parking = ListePlaces();
 	parking.ajouterPlace(&place1);
 
-	Mission m1 = Mission(0,Date(10,10,10,10,2010),Date(10,11,10,10,2010));
+	Mission m1 = Mission(0,Date(10,9,10,10,2010),Date(10,10,10,10,2010));
 	Vehicule bus1 = Vehicule(0,1);
 	bus1.ajouterMission(m1);
 
-	parking.afficherListePlaces();
-	bus1.afficherMissions();
+	Mission m2 = Mission(0,Date(10,8,10,10,2010),Date(10,11,10,10,2010));
+	Vehicule bus2 = Vehicule(1,1);
+	bus2.ajouterMission(m2);
 
-	Solution solver = Solution();
-	vector<string> placesVides = solver.getPlacesVides(parking);
+	std::vector<Vehicule> vehicules;
+	vehicules.push_back(bus1);
+	vehicules.push_back(bus2);
 
-	cout<<"places vides : "<< placesVides.at(0) << endl;
-		
-	system("pause");
+	//LE BUS1 EST GARE SUR LA PLACE 1
+	place1.setNumeroVehicule(bus1.getID());
+	parking.afficherListePlaces();*/
+	
+
 	return 0;
 }
 
