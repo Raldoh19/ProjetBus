@@ -1,4 +1,4 @@
-// ProjetBus.cpp : définit le point d'entrée pour l'application console.
+// ProjetBus.cppÂ : dÃ©finit le point d'entrÃ©e pour l'application console.
 //
 
 #include <iostream>
@@ -39,28 +39,7 @@ int main(int argc, char* argv[])
 		cout << e->what() << endl;
 	}
 
-	/*
-	Place place1 = Place("01",1);
-	ListePlaces parking = ListePlaces();
-	parking.ajouterPlace(&place1);
-
-	Mission m1 = Mission(0,Date(10,9,10,10,2010),Date(10,10,10,10,2010));
-	Vehicule bus1 = Vehicule(0,1);
-	bus1.ajouterMission(m1);
-
-	Mission m2 = Mission(0,Date(10,8,10,10,2010),Date(10,11,10,10,2010));
-	Vehicule bus2 = Vehicule(1,1);
-	bus2.ajouterMission(m2);
-
-	std::vector<Vehicule> vehicules;
-	vehicules.push_back(bus1);
-	vehicules.push_back(bus2);
-
-	//LE BUS1 EST GARE SUR LA PLACE 1
-	place1.setNumeroVehicule(bus1.getID());
-	parking.afficherListePlaces();*/
-	
-
+	system("pause");
 	return 0;
 }
 

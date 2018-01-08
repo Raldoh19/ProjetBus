@@ -29,7 +29,7 @@ public:
 
 	void toString()
 	{
-		std::cout << "Le vehicule " << idVehicule << " est stationné en " << numeroPlace << std::endl;
+		std::cout << "Le vehicule " << idVehicule << " est stationnÃ© en " << numeroPlace << std::endl;
 	}
 };
 #endif
