@@ -5,6 +5,7 @@
 #include "ListePlaces.h"
 #include "Caracteristique.h"
 #include <string>
+#include <vector>
 class Solution
 {
 private:
@@ -27,7 +28,7 @@ public:
 	std::vector<Caracteristique> trierCaracteristiques(std::vector<Caracteristique> caracteristiques);
 	bool verificationSolution(Solution solution,ListePlaces parkingInitial);
 	std::vector<std::pair<Vehicule*,int>> chercheBusADeplacer(Date date);
-	std::vector<std::string> getPlacesVides(ListePlaces parking);
+	std::vector<Place> getPlacesVides(ListePlaces parking);
 	bool peutSeGarer(Place p);
 	bool peutPartir(Place p);
 	int placeDuBus(int id);
@@ -35,6 +36,7 @@ public:
 	Place* trouverPlaceNumero(std::string numero);
 	bool peutSortirSolution(Place * p);
 	bool pourraPartir(Place p,Date date);
+	int getIdBus(int numero,std::vector<Vehicule> listeBus);
 };
 #endif;
 
