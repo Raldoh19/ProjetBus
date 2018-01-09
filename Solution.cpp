@@ -9,7 +9,7 @@ std::vector<Caracteristique> Solution::getCaracteristiques(){
 }
 
 bool Solution::verificationSolution(Solution solution,ListePlaces parking){
-	//Avancer dans les caracteristiques de la solution à partir du parking initial, et voir si on viole des contraintes
+	//Avancer dans les caracteristiques de la solution Ã  partir du parking initial, et voir si on viole des contraintes
 	unsigned int indexCarac;
 	Place* placeAVerif;
 	/*
@@ -17,7 +17,7 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking){
 		On tri solution.caracteristiques en fonction des dates d'arrivees
 	- On parcourt les caracteristiques, et on regarde si l'assignation est bonne 
 		PeutSeGarer a la place
-		PeutPartirDeLaPlace à temps
+		PeutPartirDeLaPlace Ã  temps
 	*/
 	vector<Caracteristique> caracteristiquesTriees = solution.trierCaracteristiques(solution.getCaracteristiques());
 	for(indexCarac = 0; indexCarac < caracteristiquesTriees.size(); indexCarac++){
@@ -97,13 +97,13 @@ std::vector<Caracteristique> Solution::trierCaracteristiques(std::vector<Caracte
 }
 /*
 	Methodes TODO : 
-		- void placesEligibles(vector<string>* placesVides) : modifie placesVides pour ne garder que les places où l'on peut se garer.
-		Comment savoir si le bus pourra partir ? il faut regarder les places de sortie, si elle est occupée, voir si le bus dessus a une mission avec dateDepart avant la prochaine mission du bus qui se gare
+		- void placesEligibles(vector<string>* placesVides) : modifie placesVides pour ne garder que les places oÃ¹ l'on peut se garer.
+		Comment savoir si le bus pourra partir ? il faut regarder les places de sortie, si elle est occupÃ©e, voir si le bus dessus a une mission avec dateDepart avant la prochaine mission du bus qui se gare
 		un beau petit bordel quoi :(((((((((
 		*/
 
 /*
-	recupere les places auxquels on peut accéder
+	recupere les places auxquels on peut accÃ©der
 */
 void Solution::placesEligibles(vector<string>* placesVide){
 	unsigned int i;
