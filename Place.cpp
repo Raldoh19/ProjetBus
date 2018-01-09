@@ -86,15 +86,16 @@ void Place::setPlaceSortie(ListePlaces * ps)
 
 bool Place::peutAcceder()
 {
-	if(placeAcces == NULL){
+	if(placeAcces == NULL)
+	{
 		return true;
 	}
 	for(int i =0 ; i < this->placeAcces->getNbPlaces(); i++)
 	{
-		if(this->placeAcces->getPlace(std::to_string(i))->getNumeroVehicule() != -1)
+		Place * currentPlace = this->placeAcces->getPlaceIndex(i);
+		if(currentPlace->getNumeroVehicule() != -1)
 			return false;
 	}
-
 	return true;
 }
 

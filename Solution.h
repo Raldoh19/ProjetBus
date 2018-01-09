@@ -5,6 +5,7 @@
 #include "ListePlaces.h"
 #include "Caracteristique.h"
 #include <string>
+#include <vector>
 class Solution
 {
 private:
@@ -35,6 +36,7 @@ public:
 	Place* trouverPlaceNumero(std::string numero);
 	bool peutSortirSolution(Place * p);
 	bool pourraPartir(Place p,Date date);
+	int getIdBus(int numero,std::vector<Vehicule> listeBus);
 };
 #endif;
 
