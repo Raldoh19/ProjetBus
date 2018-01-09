@@ -49,8 +49,9 @@ bool Solution::verificationSolution(ListePlaces parkingInitial, Date dateInitial
 
 bool Solution::pourraPartir(Place p,Date date){
 	unsigned int i,j;
-	
-
+	if(p.getPlaceSortie() == NULL){
+		return true;
+	}
 	for(i = 0; i < p.getPlaceSortie()->getNbPlaces(); i++){
 		Vehicule busConcerne = vehiculesConcernes[p.getPlaceSortie()->getListePlaces()[i]->getNumeroVehicule()];
 		for(j = 0;j < busConcerne.getNbMissions() ; j++){
