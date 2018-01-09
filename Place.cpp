@@ -67,9 +67,9 @@ void Place::afficher()
 	if(this->numeroVehicule == -1)
 		std::cout << " - LIBRE" << std::endl;
 	else
-		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
+		std::cout << " - Vehicule stationnÃ©: " << this->numeroVehicule << std::endl;
 
-	std:: cout << " Chemin d'accès: ";
+	std:: cout << " Chemin d'accÃ¨s: ";
 	this->placeAcces->afficherSuite();
 	std:: cout << " Chemin de sortie: ";
 	this->placeSortie->afficherSuite();
@@ -86,26 +86,29 @@ void Place::setPlaceSortie(ListePlaces * ps)
 
 bool Place::peutAcceder()
 {
-	if(placeAcces == NULL){
+	if(placeAcces == NULL)
+	{
 		return true;
 	}
 	for(int i =0 ; i < this->placeAcces->getNbPlaces(); i++)
 	{
-		if(this->placeAcces->getPlace(std::to_string(i))->getNumeroVehicule() != -1)
+		Place * currentPlace = this->placeAcces->getPlaceIndex(i);
+		if(currentPlace->getNumeroVehicule() != -1)
 			return false;
 	}
-
 	return true;
 }
 
 bool Place::peutSortir()
 {
-	if(placeSortie == NULL){
+	if(placeSortie == NULL)
+	{
 		return true;
 	}
 	for(int i =0 ; i < this->placeSortie->getNbPlaces(); i++)
 	{
-		if(this->placeSortie->getPlace(std::to_string(i))->getNumeroVehicule() != -1)
+		Place * currentPlace = this->placeSortie->getPlaceIndex(i);
+		if(currentPlace->getNumeroVehicule() != -1)
 			return false;
 	}
 	return true;

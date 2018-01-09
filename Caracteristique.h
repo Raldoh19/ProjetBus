@@ -27,5 +27,9 @@ public:
 		return dateArrive;
 	}
 
+	void toString()
+	{
+		std::cout << "Le vehicule " << idVehicule << " est stationné en " << numeroPlace << std::endl;
+	}
 };
 #endif

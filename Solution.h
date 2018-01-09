@@ -5,25 +5,25 @@
 #include "ListePlaces.h"
 #include "Caracteristique.h"
 #include <string>
+#include <vector>
 class Solution
 {
 private:
-	Vehicule* vehiculesConcernes;
-	unsigned int nbVehiculesConcernes;
+	std::vector<Vehicule> vehiculesConcernes;
 	ListePlaces etatParking;
 	std::vector<Caracteristique> caracteristiques;
 public:
 	Solution(void){}
 	~Solution(void){}
 
-	Solution(ListePlaces parking,Vehicule* vehicules,unsigned int nb){
+	Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
+	{
 		etatParking = parking;
 		vehiculesConcernes = vehicules;
-		nbVehiculesConcernes = nb;
 	}
 
-
-	ListePlaces nouveauParking();
+	void generateCarac();
+	ListePlaces nouveauParking(Date dateDebut, Date dateFin);
 	std::vector<Caracteristique> getCaracteristiques();
 	std::vector<Caracteristique> trierCaracteristiques(std::vector<Caracteristique> caracteristiques);
 	bool verificationSolution(Solution solution,ListePlaces parkingInitial);
@@ -34,8 +34,9 @@ public:
 	int placeDuBus(int id);
 	void placesEligibles(std::vector<std::string>* placesVide);
 	Place* trouverPlaceNumero(std::string numero);
-
+	bool peutSortirSolution(Place * p);
 	bool pourraPartir(Place p,Date date);
+	int getIdBus(int numero,std::vector<Vehicule> listeBus);
 };
 #endif;
 

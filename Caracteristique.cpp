@@ -15,3 +15,4 @@ Caracteristique::Caracteristique(int idVeh, std::string idPl, Date date)
 Caracteristique::~Caracteristique(void)
 {
 }
+
