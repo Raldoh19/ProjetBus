@@ -26,7 +26,6 @@ public:
 	void setNumeroPlace(string num);
 	void setTaillePlace(int taille);
 	void setNumeroVehicule(int numeroVehicule);
-
 	void setPlaceAcces(ListePlaces*);
 	void setPlaceSortie(ListePlaces*);
 	bool peutAcceder();
@@ -34,8 +33,7 @@ public:
 	ListePlaces* getPlaceAcces();
 	ListePlaces* getPlaceSortie();
 
-
-
+	bool operator<(const Place& st);
 };
 
 #endif

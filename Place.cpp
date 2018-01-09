@@ -114,3 +114,7 @@ bool Place::peutSortir()
 	return true;
 }
 
+bool Place::operator<(const Place& st)
+{
+	return this->placeSortie->getNbPlaces() < st.placeSortie->getNbPlaces();
+}
