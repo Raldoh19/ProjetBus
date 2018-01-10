@@ -9,6 +9,11 @@ std::vector<Caracteristique> Solution::getCaracteristiques(){
 
 bool Solution::verificationSolution(Solution solution,ListePlaces parking){
 	//Avancer dans les caracteristiques de la solution à partir du parking initial, et voir si on viole des contraintes
+	//Il faut REJOUER TOUT afin de faire partir les bus comme il faut
+	//On a donc besoin en parametre : Solution, parking, DateDebut,DateFin
+	//On doit regarder si à heureEnCours un bus doit partir ou si un bus doit arriver (caracteristique)
+	//Si un bus doit partir, on verifie qu'il peut, on signale s'il peut pas, et on le fait partir quand meme
+	//Si un bus doit arriver, on verifie qu'il peut, on signale s'il peut pas, et on le fait se garer quand meme
 	unsigned int indexCarac;
 	Place* placeAVerif;
 	/*
@@ -53,9 +58,6 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking){
 			idBusAVerif++;
 		}
 		if(idBusAVerif != vehiculesConcernes.size()){
-			
-		
-		
 			Vehicule busAVerif = vehiculesConcernes[idBusAVerif];
 			Date dateProchainDepart = busAVerif.premierDepartApres(caracteristiquesTriees[indexCarac].getDateArrivee());
 			//prendre + proche DateDepart apres carac.dateArrivee pour le bus a verif
