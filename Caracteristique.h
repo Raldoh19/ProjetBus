@@ -30,6 +30,8 @@ public:
 	void toString()
 	{
 		std::cout << "Le vehicule " << idVehicule << " est stationné en " << numeroPlace << std::endl;
+		std::cout << "Heure arrive: " << dateArrive.toString() << std::endl;
+
 	}
 };
 #endif
