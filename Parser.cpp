@@ -79,6 +79,8 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 					try
 					{
 						int numeroMission = stoi(ligneDecoupe[2]);
+						bool missionChecked = false;
+						int busID = 0;
 						for(int i = 0; i < missions.size(); i++)
 						{
 							if(missions[i].getID() == numeroMission)
@@ -86,27 +88,37 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 								if(indiceVehicule >= buses.size())
 								{
 									bool madeIt = false;
-									int j = 0;
-									while(j < buses.size() && madeIt == false)
+									busID = 0;
+									while(busID < buses.size() && madeIt == false)
 									{
-										Mission curMission = buses[j]->getMissions()[buses[j]->getMissions().size()-1];
+										Mission curMission = buses[busID]->getMissions()[buses[busID]->getMissions().size()-1];
 										if(curMission.getDateArrivee().estAvant(missions[i].getDateDepart()))
 										{
-											buses[j]->ajouterMission(missions[i]);
-											parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[j]->getID()));
+											buses[busID]->ajouterMission(missions[i]);
+											parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[busID]->getID()));
+											missionChecked=true;
 											madeIt = true;
 											break;
 										}
-										j++;
+										busID++;
 									}
 								}
 								else
 								{
 									buses[indiceVehicule]->ajouterMission(missions[i]);
 									parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[indiceVehicule]->getID()));
+									missionChecked=true;
+									busID = indiceVehicule;
 									indiceVehicule++;
 								}
-								break;
+							}
+							if(missionChecked && i != 0)
+							{
+								if(missions[i].getDateDepart().estApres(missions[i-1].getDateDepart()))
+								{
+									buses[busID]->ajouterMission(missions[i]);
+									missionChecked = false;
+								}
 							}
 						}
 					}
@@ -181,7 +193,10 @@ vector<Mission> Parser::generateMissions()
 		fichier.close();
 		return missionsGeneres;
 	}
-	else throw new exception("Impossible d'ouvrir le fichier!");
+	else
+	{
+		throw new exception("[Mission] Impossible d'ouvrir le fichier!");
+	}
 }
 
 

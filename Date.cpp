@@ -18,6 +18,15 @@ Date::Date(int mn,int h,int j, int m, int a)
 	annee = a;
 }
 
+Date::Date(Date copie, int h, int mn)
+{
+	this->minutes = mn;
+	this->heure = h;
+	this->jour = copie.jour;
+	this->mois = copie.mois;
+	this->annee = copie.annee;
+}
+
 bool Date::estAvant(Date d)
 {
 	return( (d.annee > this->annee) || 
@@ -49,6 +58,12 @@ void Date::ajouterMinutes(int nbMinutes){
 		minutes += nbMinutes;
 	}
 }
+
+std::string Date::getHour()
+{
+	return std::to_string(heure).append(":").append(std::to_string(minutes));
+}
+
 Date::~Date(void)
 {
 
@@ -71,7 +86,7 @@ void Date::ajouterMinute(int minutes)
 void Date::ajouterHeure(int heure)
 {
 	this->heure = this->heure + heure;
-	if(this->heure == 24)
+	if(this->heure >= 24)
 	{
 		this->ajouterJour(1);
 		this->heure = 0;
@@ -116,4 +131,10 @@ void Date::ajouterMois(int mois)
 void Date::ajouterAnnee(int annee)
 {
 	this->annee = this->annee + annee;
+}
+
+void Date::setTime(int h, int mn)
+{
+	this->heure = h;
+	this->minutes = mn;
 }
