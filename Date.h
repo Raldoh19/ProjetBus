@@ -17,7 +17,8 @@ public:
 	bool estAvant(Date d);
 	bool estApres(Date d);
 	bool estEgale(Date d);
-
+	int getMinutes();
+	int getHeures();
 	//void ajouterMinute(int);
 	void ajouterHeure(int);
 	void ajouterJour(int);

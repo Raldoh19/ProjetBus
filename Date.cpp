@@ -100,6 +100,16 @@ void Date::ajouterHeure(int nbHeures)
 	}
 }
 
+int Date::getMinutes()
+{
+	return this->minutes;
+}
+
+int Date::getHeures()
+{
+	return this->heure;
+}
+
 void Date::ajouterJour(int jour)
 {
 	this->jour = this->jour + jour;
