@@ -24,6 +24,8 @@ public:
 	Date premierDepartApres(Date date);
 	std::vector<Mission> getMissions();
 	int getNbMissions();
+
+	bool doitPartirEntre(Date dateD,Date dateF);
 };
 
 #endif
