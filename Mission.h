@@ -17,7 +17,6 @@ public:
 	Date getDateDepart();
 	bool operator<(const Mission& st);
 	void afficher();
-	void generateMissions(int nbVehicule, Date dateDebut, Date dateFin);
 };
 
 #endif

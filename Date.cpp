@@ -50,11 +50,15 @@ bool Date::estEgale(Date d)
 	return (d.annee == this->annee && d.mois == this->mois && d.jour == this->jour && d.heure == this->heure && d.minutes == this->minutes);
 }
 	
-void Date::ajouterMinutes(int nbMinutes){
-	if( minutes + nbMinutes >=60){
+void Date::ajouterMinutes(int nbMinutes)
+{
+	if( minutes + nbMinutes >=60)
+	{
 		++heure;
 		minutes = nbMinutes + minutes - 60;
-	}else{
+	}
+	else
+	{
 		minutes += nbMinutes;
 	}
 }
@@ -72,24 +76,27 @@ Date::~Date(void)
 std::string Date::toString(){
 	return std::to_string(jour).append(" ").append(std::to_string(mois)).append(" ").append(std::to_string(annee)).append(" ").append(std::to_string(heure)).append(" ").append(std::to_string(minutes));
 }
-
+/*
 void Date::ajouterMinute(int minutes)
 {
 	this->minutes = this->minutes + minutes;
 	if(this->minutes >= 60)
 	{
-		this->ajouterHeure(this->minutes/60);
+		this->ajouterHeure(1);
 		this->minutes = this->minutes % 60;
 	}
-}
+}*/
 
-void Date::ajouterHeure(int heure)
+void Date::ajouterHeure(int nbHeures)
 {
-	this->heure = this->heure + heure;
-	if(this->heure >= 24)
+	if( heure + nbHeures >= 24)
 	{
-		this->ajouterJour(1);
-		this->heure = 0;
+		++jour;
+		heure = nbHeures + heure - 24;
+	}
+	else
+	{
+		heure += nbHeures;
 	}
 }
 
