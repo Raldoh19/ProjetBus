@@ -1,6 +1,6 @@
 #ifndef MISSION_H
 #define MISSION_H
-
+#include <vector>
 #include "Date.h"
 class Mission
 {
@@ -17,6 +17,7 @@ public:
 	Date getDateDepart();
 	bool operator<(const Mission& st);
 	void afficher();
+	void generateMissions(int nbVehicule, Date dateDebut, Date dateFin);
 };
 
 #endif

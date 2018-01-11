@@ -16,15 +16,19 @@ int main(int argc, char* argv[])
 	
 	try
 	{
-
 		Date debut = Date(0,5,14,12,2017);
 		Date fin = Date(59,23,14,12,2017);
 		//Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
 		Parser parser("F:\\ProjetVisualStudio\\ProjetBus\\ProjetBus\\Debug\\DonneesBus\\entrees_volume\\");
 		vector<Vehicule*> buses = parser.generateVehicules();
+		Mission m1;
+		m1.generateMissions(buses.size(), debut, fin);
 		vector<Mission> missions = parser.generateMissions();
 		ListePlaces * parking = parser.generateParking(missions, buses);
+		ListePlaces * parkingCopie = parser.generateParking(missions, buses);
 		parser.generateTrajet(*parking);
+		parser.generateTrajet(*parkingCopie);
+		
 		vector<Vehicule> busConcerne;
 		for(unsigned int i =0; i<buses.size(); i ++)
 		{
@@ -32,7 +36,8 @@ int main(int argc, char* argv[])
 		}
 		Solution s1(*(parking), busConcerne);
 		s1.nouveauParking(debut, fin);
-		s1.verificationSolution(s1,*parking,debut);
+		
+		s1.verificationSolution(s1,*parkingCopie,debut,fin);
 	}
 	catch(exception * e)
 	{
