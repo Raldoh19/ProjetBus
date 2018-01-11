@@ -87,3 +87,15 @@ Date Vehicule::premierDepartApres(Date date){
 
 	return missions[indiceMin].getDateDepart();
 }
+
+bool Vehicule::doitPartirEntre(Date dateD,Date dateF){
+	unsigned int i = 0;
+
+	while(i < nbMissions){
+		if((missions[i].getDateDepart().estApres(dateD) && missions[i].getDateDepart().estAvant(dateF)) || (missions[i].getDateDepart().estEgale(dateD) || missions[i].getDateDepart().estEgale(dateF))){
+			return true;
+		}
+		i++;
+	}
+	return false;
+}

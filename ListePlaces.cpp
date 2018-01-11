@@ -128,3 +128,19 @@ Place * ListePlaces::getPlaceVehicule(int numeroVehicule)
 	}
 	return NULL;
 }
+
+ListePlaces * ListePlaces::subList(int indexDepart, int indexFin)
+{
+	if(indexDepart >= 0 && indexFin <= this->nbPlaces)
+	{
+		ListePlaces * toReturn = new ListePlaces();
+		for(int i = indexDepart; i < indexFin; i++)
+		{
+			toReturn->ajouterPlace(this->listePlaces[i]);
+		}
+		return toReturn;
+	}
+	else
+		return NULL;
+	
+}

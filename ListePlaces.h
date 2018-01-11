@@ -28,8 +28,7 @@ public:
 	Place * getPlaceVehicule(int numeroVehicule);
 	Place * getPlaceIndex(int index);
 	std::vector<Place*> getListePlaces();
-
-
+	ListePlaces * subList(int indexDepart, int indexFin);
 };
 
 #endif

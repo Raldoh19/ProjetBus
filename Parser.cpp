@@ -83,6 +83,7 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 						int busID = 0;
 						for(int i = 0; i < missions.size(); i++)
 						{
+							bool alreadyCalc = false;
 							if(missions[i].getID() == numeroMission)
 							{
 								if(indiceVehicule >= buses.size())
@@ -94,7 +95,14 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 										Mission curMission = buses[busID]->getMissions()[buses[busID]->getMissions().size()-1];
 										if(curMission.getDateArrivee().estAvant(missions[i].getDateDepart()))
 										{
-											buses[busID]->ajouterMission(missions[i]);
+											for(int m = 0; m < buses[busID]->getNbMissions(); m++)
+											{
+												if(buses[busID]->getMissions()[m].getID() == missions[i].getID())
+													alreadyCalc = true;
+											}
+											if(!alreadyCalc)
+												buses[busID]->ajouterMission(missions[i]);
+
 											parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[busID]->getID()));
 											missionChecked=true;
 											madeIt = true;
@@ -105,7 +113,14 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 								}
 								else
 								{
-									buses[indiceVehicule]->ajouterMission(missions[i]);
+									for(int m = 0; m < buses[indiceVehicule]->getNbMissions(); m++)
+									{
+										if(buses[indiceVehicule]->getMissions()[m].getID() == missions[i].getID())
+											alreadyCalc = true;
+									}
+									if(!alreadyCalc)
+										buses[indiceVehicule]->ajouterMission(missions[i]);
+
 									parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[indiceVehicule]->getID()));
 									missionChecked=true;
 									busID = indiceVehicule;
@@ -116,7 +131,14 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 							{
 								if(missions[i].getDateDepart().estApres(missions[i-1].getDateDepart()))
 								{
-									buses[busID]->ajouterMission(missions[i]);
+									for(int m = 0; m < buses[busID]->getNbMissions(); m++)
+									{
+										if(buses[busID]->getMissions()[m].getID() == missions[i].getID())
+											alreadyCalc = true;
+									}
+									if(!alreadyCalc)
+										buses[busID]->ajouterMission(missions[i]);
+
 									missionChecked = false;
 								}
 							}
