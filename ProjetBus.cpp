@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	try
 	{
 		Date debut = Date(0,5,14,12,2017);
-		Date fin = Date(59,23,14,12,2017);
+		Date fin = Date(59,23,15,12,2017);
 		//Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
 		Parser parser("F:\\ProjetVisualStudio\\ProjetBus\\ProjetBus\\Debug\\DonneesBus\\entrees_volume\\");
 		vector<Vehicule*> buses = parser.generateVehicules();

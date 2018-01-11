@@ -61,7 +61,7 @@ int nombreTeleportation = 0;
 				}
 			}
 		}
-		std::cout << "nb tp:" << nombreTeleportation << std::endl;
+		//std::cout << "nb tp:" << nombreTeleportation << std::endl;
 		
 	}
 
@@ -255,6 +255,7 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 			}
 			
 		}
+		std::cout<<".";
 	}
 	std::cout << "=== CARACTERISTIQUE GENERE ===" << std::endl;
 	for(int z = 0 ; z < this->caracteristiques.size(); z++)
