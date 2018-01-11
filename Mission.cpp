@@ -55,7 +55,7 @@ void Mission::afficher()
 		"\tDate debut: " << dateDepart.toString() << std::endl <<
 		"\tDate arrivee : " << dateArrivee.toString() << std::endl;
 }
-
+/*
 void Mission::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 {
 	std::vector<Mission> missionToReturn;
@@ -103,4 +103,4 @@ void Mission::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
     }
     else
             cerr << "Impossible d'ouvrir le fichier !" << endl;
-}
+}*/
