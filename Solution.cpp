@@ -61,6 +61,11 @@ int nombreTeleportation = 0;
 					parking.getPlace(caracteristiques[j].getNumeroPlace())->setNumeroVehicule(caracteristiques[j].getIdVehicule());
 				}
 			}
+		}	
+		if(dateInitiale.getHeures() == 23 && dateInitiale.getMinutes() == 59)
+		{
+			dateInitiale.ajouterJour(1);
+			dateInitiale.setTime(0,0);
 		}
 	}
 	return true;
@@ -207,7 +212,6 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 	Date indexDebut = dateDebut;
 	for(dateDebut; dateDebut.estAvant(dateFin); dateDebut.ajouterMinutes(1))
 	{
-		std::cout << dateDebut.toString() << std::endl;
 		// On verifie pour tout les vehicules concernes par cette nouvelle solution
 		for(int i = 0 ; i < allMissions.size() ; i++)
 		{
@@ -217,14 +221,10 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				Place * placeVehicule = etatParking.getPlaceVehicule(allMissions[i].first.getID());
 				if(placeVehicule)
 				{
-						if(!placeVehicule->peutSortir())
-						{
-					
-					nombreTeleportation++;
-						}
-					//placeVehicule->getPlaceSortie()->afficherSuite();
-					//On vide la place
-						placeVehicule->setNumeroVehicule(-1);
+					if(!placeVehicule->peutSortir())
+						nombreTeleportation++;
+
+					placeVehicule->setNumeroVehicule(-1);
 				}
 				
 			}
@@ -253,9 +253,13 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				placeTrouvee = false;
 				break;
 			}
-			
 		}
-		std::cout<<".";
+
+		if(dateDebut.getHeures() == 23 && dateDebut.getMinutes() == 59)
+		{
+			dateDebut.ajouterJour(1);
+			dateDebut.setTime(0,0);
+		}
 	}
 	std::cout << "Solution trouve avec : " << nombreTeleportation << " teleportations, allez !" << std::endl;
 	return etatParking;

@@ -90,6 +90,12 @@ void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 	parking.afficher();
 }
 
+void Generateur::generateParkingB(int nombrePlace,int nbColonne){
+	int nbLigne = nombrePlace / nbColonne;
+	ListePlaces parking;
+
+}
+
 Generateur::~Generateur(void)
 {
 
