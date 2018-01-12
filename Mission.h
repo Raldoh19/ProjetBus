@@ -9,9 +9,7 @@ private:
 	Date dateArrivee;
 	Date dateDepart;
 public:
-	Mission();
 	Mission(int id, Date dateArr, Date dateDep);
-	~Mission();
 	int getID();
 	Date getDateArrivee();
 	Date getDateDepart();

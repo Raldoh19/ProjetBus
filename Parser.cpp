@@ -35,17 +35,7 @@ Date createDate(string chaine)
 	}
 }
 
-Parser::Parser(void)
-{
-	this->file = "";
-}
-
 Parser::Parser(string file)
-{
-	this->file= file;
-}
-
-void Parser::setFile(string file)
 {
 	this->file= file;
 }
@@ -267,9 +257,4 @@ void Parser::generateTrajet(ListePlaces parking)
 		fichier.close();
 	}
 	else throw new exception("Impossible d'ouvrir le fichier!");
-}
-
-
-Parser::~Parser(void)
-{
 }

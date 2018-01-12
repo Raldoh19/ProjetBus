@@ -11,18 +11,13 @@ class ListePlaces
 {
 private:
 	std::vector<Place*> listePlaces;
-	unsigned int nbPlaces;
 public:
 	ListePlaces(void);
-	~ListePlaces(void);
-	ListePlaces(int nb);
-	Place * getPlace(std::string numero);
 	int getNbPlaces();
+	Place * getPlace(std::string numero);
 	void ajouterPlace(Place *p);
 	void supprimerPlace(Place *p);
 	void afficherListePlaces();
-
-	void afficher();
 	void afficherSuite();
 	Place * recherchePlace(std::string placeCherche);
 	Place * getPlaceVehicule(int numeroVehicule);

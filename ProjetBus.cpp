@@ -35,14 +35,16 @@ int main(int argc, char* argv[])
 		parser.generateTrajet(*parking);
 		parser.generateTrajet(*parkingCopie);
 		
+		parking->afficherListePlaces();
+
 		vector<Vehicule> busConcerne;
 		for(unsigned int i =0; i<buses.size(); i ++)
 		{
 			busConcerne.push_back(*(buses[i]));
 		}
+
 		Solution s1(*(parking), busConcerne);
 		s1.nouveauParking(debut, fin);
-		
 		s1.verificationSolution(s1,*parkingCopie,debut,fin);
 	}
 	catch(exception * e)
