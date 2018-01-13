@@ -71,3 +71,13 @@ std::vector<Mission> Vehicule::getMissions(){
 int Vehicule::getNbMissions(){
 	return  missions.size();
 }
+
+/**
+	operateur < pour différencier entre Vehicule
+	*/
+bool Vehicule::operator<(const Vehicule& veh)
+{
+	if(veh.missions.size() == 0 || this->missions.size() == 0)
+		return true;
+	return this->missions[0] < veh.missions[0];
+}

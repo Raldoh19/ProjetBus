@@ -51,7 +51,8 @@ int nombreTeleportation = 0;
 					if(!placeVehicule->peutSortir())
 					{
 						ListePlaces * sortieChemin = placeVehicule->getPlaceSortie();
-						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() <<std::endl;
+						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() << std::endl;
+
 						nombreTeleportation++;
 					}
 					placeVehicule->setNumeroVehicule(-1);
@@ -76,9 +77,10 @@ int nombreTeleportation = 0;
 						}
 					}
 
-					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != -1 )
+					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != -1 && parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != caracteristiques[j].getIdVehicule())
 					{
-						std::cout<<"--VERIFICATION SOLUTION-- Place " << caracteristiques[j].getNumeroPlace() << " non vide " << std::endl;
+						std::cout<<"--VERIFICATION SOLUTION-- " << std::endl;
+						std::cout<<"Impossible pour"<< caracteristiques[j].getIdVehicule() <<"d'acceder a " << caracteristiques[j].getNumeroPlace() << "[occupe par: "<< parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() <<"]" <<std::endl;
 					}
 					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getTaillePlace() < infoVehicule.getTailleVehicule() )
 					{
@@ -141,6 +143,8 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 		for(int i = 0 ; i < allMissions.size() ; i++)
 		{
 			bool placeTrouvee = false;
+			
+			
 			if(allMissions[i].second.getDateDepart().estEgale(dateDebut))
 			{
 				Place * placeVehicule = etatParking.getPlaceVehicule(allMissions[i].first.getID());
@@ -148,10 +152,8 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				{
 					if(!placeVehicule->peutSortir())
 						nombreTeleportation++;
-
 					placeVehicule->setNumeroVehicule(-1);
 				}
-				
 			}
 			if(allMissions[i].second.getDateArrivee().estEgale(dateDebut))
 			{
@@ -164,17 +166,16 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				for(int k = 0; k < placeVide.size();k++)
 				{
 					Place * currentPlace = etatParking.getPlace(placeVide[k].getNumeroPlace());
-
 					Vehicule infoVehicule(0,0);
 					for(int indexVeh = 0; indexVeh < this->vehiculesConcernes.size() ; indexVeh++)
 					{
-						if(vehiculesConcernes[indexVeh].getID() == currentPlace->getNumeroVehicule())
+						if(vehiculesConcernes[indexVeh].getID() == allMissions[i].first.getID())
 						{
 							infoVehicule = vehiculesConcernes[indexVeh];
 							break;
 						}
 					}
-					if(currentPlace->peutAcceder() && currentPlace->getNumeroVehicule() == -1 && currentPlace->getTaillePlace() >= infoVehicule.getTailleVehicule())
+					if(currentPlace->peutAcceder(infoVehicule.getTailleVehicule() ) && currentPlace->getNumeroVehicule() == -1)
 					{
 						this->caracteristiques.push_back(Caracteristique(allMissions[i].first.getID(),currentPlace->getNumeroPlace(), dateDebut));
 						currentPlace->setNumeroVehicule(allMissions[i].first.getID());
@@ -182,6 +183,7 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 						break;
 					}
 				}
+
 			}
 			if(placeTrouvee)
 			{

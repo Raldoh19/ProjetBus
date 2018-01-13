@@ -23,7 +23,9 @@ public:
 	Place * getPlaceVehicule(int numeroVehicule);
 	Place * getPlaceIndex(int index);
 	std::vector<Place*> getListePlaces();
+	void triListe();
 	ListePlaces * subList(int indexDepart, int indexFin);
+	ListePlaces * getPlaceVide(int taille);
 };
 
 #endif

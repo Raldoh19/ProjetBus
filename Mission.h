@@ -13,6 +13,7 @@ public:
 	int getID();
 	Date getDateArrivee();
 	Date getDateDepart();
+	void plusOneDay();
 	bool operator<(const Mission& st);
 	void afficher();
 };

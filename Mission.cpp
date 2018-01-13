@@ -67,3 +67,11 @@ void Mission::afficher()
 		"\tDate debut: " << dateDepart.toString() << std::endl <<
 		"\tDate arrivee : " << dateArrivee.toString() << std::endl;
 }
+/**
+Methode pour decaler la mission d'un jour
+*/
+void Mission::plusOneDay()
+{
+	dateDepart.ajouterJour(1);
+	dateArrivee.ajouterJour(1);
+}

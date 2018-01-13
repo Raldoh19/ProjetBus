@@ -1,7 +1,7 @@
 #include "ListePlaces.h"
 #include <iostream>
 #include "Place.h"
-
+#include <algorithm>
 /**
 Constrcuteur par défaut
 */
@@ -92,7 +92,7 @@ Place * ListePlaces::getPlaceIndex(int index)
 {
 	if ((index >= this->listePlaces.size()) || (index < 0))
 	{
-		throw exception("Place introuvable !");
+		return NULL;
 	}
 	else
 	{
@@ -111,7 +111,7 @@ Place * ListePlaces::getPlace(std::string numero)
 		}
 		i++;
 	}
-	throw exception("Place introuvable !");
+	return NULL;
 }
 
 /**
@@ -154,4 +154,30 @@ Retourne la liste de place entières
 */
 std::vector<Place*> ListePlaces::getListePlaces(){
 	return listePlaces;
+}
+
+/**
+Methode qui trie les places selon les plus proche de la sortie
+*/
+void ListePlaces::triListe()
+{
+	std::sort(listePlaces.begin(), listePlaces.end(), [ ]( Place* first, Place* second )
+	{
+		return first->getPlaceSortie()->getNbPlaces() < second->getPlaceSortie()->getNbPlaces();
+	});
+}
+
+/**
+Methode qui trie les places selon les plus proche de la sortie
+*/
+
+ListePlaces * ListePlaces::getPlaceVide(int taille)
+{
+	ListePlaces * toReturn = new ListePlaces();
+	for(int i = 0; i < this->listePlaces.size() ; i++)
+	{
+		if(listePlaces[i]->getNumeroVehicule() == -1 && listePlaces[i]->getTaillePlace() == taille)
+			toReturn->ajouterPlace(this->listePlaces[i]);
+	}
+	return toReturn;
 }

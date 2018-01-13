@@ -22,6 +22,7 @@ public:
 	void afficherMissions();
 	std::vector<Mission> getMissions();
 	int getNbMissions();
+	bool operator<(const Vehicule& veh);
 };
 
 #endif
