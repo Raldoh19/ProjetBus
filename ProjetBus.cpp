@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	
 	try
 	{
-		int nombreVehicule = 10;
+		int nombreVehicule = 20;
 		Date debut = Date(0,5,14,12,2017);
 		Date fin = Date(59,23,15,12,2017);
 		Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
