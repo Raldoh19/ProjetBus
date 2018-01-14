@@ -8,7 +8,6 @@
 Vehicule::Vehicule(int id, int taille){
 	ID = id;
 	tailleVehicule = taille;
-	nbMissions = 0;
 }
 
 Vehicule::~Vehicule(){
@@ -33,9 +32,15 @@ void Vehicule::setTailleVehicule(int taille){
 
 void Vehicule::ajouterMission(Mission m)
 {
+	bool skip = false;
+	for(int i = 0 ; i < missions.size() ; i++)
+		if(missions[i].getID() == m.getID())
+			skip = true;
+	if(!skip)
+	{
 	missions.push_back(m);
-	nbMissions++;
 	std::sort(missions.begin(), missions.end());
+	}
 }
 
 void Vehicule::afficherMissions()
@@ -51,19 +56,17 @@ void Vehicule::retirerMission(Mission m)
 {
     int i = 0;
 
-    while( i < nbMissions && m.getID() != missions[i].getID())
+    while( i < missions.size() && m.getID() != missions[i].getID())
 	{
         i++;
     }
-    if( i == nbMissions)
+    if( i ==  missions.size())
 	{
         std::cout<<"Mission a retirer non trouve ! " << std::endl;
-        //throw exc ? 
     }
 	else
 	{
         missions.erase(missions.begin() + i);
-        nbMissions--;
 		std::sort(missions.begin(), missions.end());
     }
 }
@@ -73,17 +76,15 @@ std::vector<Mission> Vehicule::getMissions(){
 }
 
 int Vehicule::getNbMissions(){
-	return nbMissions;
+	return  missions.size();
 }
 
-Date Vehicule::premierDepartApres(Date date){
-	unsigned int i,indiceMin = 0;
-	
-	for(i=0;i<missions.size();i++){
-		if(missions[i].getDateDepart().estAvant(missions[indiceMin].getDateDepart())){
-			indiceMin = i;
-		}
-	}
-
-	return missions[indiceMin].getDateDepart();
+/**
+	operateur < pour différencier entre Vehicule
+	*/
+bool Vehicule::operator<(const Vehicule& veh)
+{
+	if(veh.missions.size() == 0 || this->missions.size() == 0)
+		return true;
+	return this->missions[0] < veh.missions[0];
 }

@@ -1,70 +1,70 @@
 #include "ListePlaces.h"
 #include <iostream>
 #include "Place.h"
-
-ListePlaces::ListePlaces(void)
-{
-	nbPlaces = 0;
-}
-
-ListePlaces::~ListePlaces(void)
+#include <algorithm>
+/**
+Constrcuteur par défaut
+*/
+ListePlaces::ListePlaces()
 {
 
 }
 
-std::vector<Place*> ListePlaces::getListePlaces(){
-	return listePlaces;
-}
-
-ListePlaces::ListePlaces(int nb)
-{
-	listePlaces.reserve(nb);
-	nbPlaces = nb;
-}
-
+/**
+Getter pour le nombre de place présent
+*/
 int ListePlaces::getNbPlaces()
 {
-	return nbPlaces;
+	return listePlaces.size();
 }
 
+/**
+Methode pour ajouter une place
+*/
 void ListePlaces::ajouterPlace(Place *p)
 {
 	listePlaces.push_back(p);
-	nbPlaces++;
 }
 
+/**
+Methode pour supprimer une place
+*/
 void ListePlaces::supprimerPlace(Place *p)
 {
     unsigned int i = 0;
 
-    while( i < nbPlaces && (p->getNumeroPlace().compare(listePlaces[i]->getNumeroPlace()) == -1))
+    while( i < listePlaces.size() && (p->getNumeroPlace().compare(listePlaces[i]->getNumeroPlace()) == -1))
 	{
         i++;
     }
-    if( i == nbPlaces)
+    if( i == listePlaces.size())
 	{
         std::cout<<"Place a retirer non trouve ! " << std::endl;
-        //throw exc ? 
     }
 	else
 	{
         listePlaces.erase(listePlaces.begin() + i);
-        nbPlaces--;
     }
 }
 
+/**
+Methode pour afficher la liste des places
+*/
 void ListePlaces::afficherListePlaces()
 {
-	for(unsigned int i =0 ; i < nbPlaces; i++)
+	for(unsigned int i =0 ; i < listePlaces.size(); i++)
 	{
 		listePlaces[i]->afficher();
 	}
 }
 
-
+/**
+Methode qui retourne un objet Place avec le meme ID recherche
+Le crée au cas ou ce dernier n'existe pas
+*/
 Place* ListePlaces::recherchePlace(std::string placeCherche)
 {
-	for(int i=0;i<this->nbPlaces;i++)
+	for(int i=0;i<this->listePlaces.size();i++)
 	{
 		if(listePlaces[i]->getNumeroPlace() == placeCherche)
 			return listePlaces[i];
@@ -73,37 +73,35 @@ Place* ListePlaces::recherchePlace(std::string placeCherche)
 	return listePlaces[listePlaces.size()-1];
 }
 
-
-void ListePlaces::afficher()
-{
-	for(int i =0 ; i < nbPlaces; i++)
-	{
-		listePlaces[i]->afficher();
-	}
-	std::cout << std::endl;
-}
-
+/**
+Affiche les places sous forme d'une suite 
+*/
 void ListePlaces::afficherSuite()
 {
-	for(int i =0 ; i < nbPlaces; i++)
+	for(int i =0 ; i < listePlaces.size(); i++)
 	{
 		std::cout << this->listePlaces[i]->getNumeroPlace() << " - ";
 	}
 	std::cout << std::endl;
 }
 
-
+/**
+Retourne l'objet Place situé a l'index index
+*/
 Place * ListePlaces::getPlaceIndex(int index)
 {
-	if ((index >= this->nbPlaces) || (index < 0))
+	if ((index >= this->listePlaces.size()) || (index < 0))
 	{
-		throw exception("Place introuvable !");
+		return NULL;
 	}
 	else
 	{
 		return listePlaces.at(index);
 	}
 }
+/**
+Retourne l'objet Place avec l'ID numero
+*/
 Place * ListePlaces::getPlace(std::string numero)
 {
 	unsigned int i = 0;
@@ -113,9 +111,12 @@ Place * ListePlaces::getPlace(std::string numero)
 		}
 		i++;
 	}
-	throw exception("Place introuvable !");
+	return NULL;
 }
 
+/**
+Retourne l'objet Place avec le vehicule : numeroVehicule 
+*/
 Place * ListePlaces::getPlaceVehicule(int numeroVehicule)
 {
 	unsigned int i = 0;
@@ -127,4 +128,66 @@ Place * ListePlaces::getPlaceVehicule(int numeroVehicule)
 		}
 	}
 	return NULL;
+}
+
+/**
+Retourne une partie de la liste 
+*/
+ListePlaces * ListePlaces::subList(int indexDepart, int indexFin)
+{
+	if(indexDepart >= 0 && indexFin <= listePlaces.size())
+	{
+		ListePlaces * toReturn = new ListePlaces();
+		for(int i = indexDepart; i < indexFin; i++)
+		{
+			toReturn->ajouterPlace(this->listePlaces[i]);
+		}
+		return toReturn;
+	}
+	else
+		return NULL;
+	
+}
+
+/**
+Retourne la liste de place entières
+*/
+std::vector<Place*> ListePlaces::getListePlaces(){
+	return listePlaces;
+}
+
+/**
+Methode qui trie les places selon les plus proche de la sortie
+*/
+void ListePlaces::triListe()
+{
+	std::sort(listePlaces.begin(), listePlaces.end(), [ ]( Place* first, Place* second )
+	{
+		int minPlaceFirst = 9999;
+		for(int t = 0 ; t < first->getPlaceSortie().size() ; t++)
+			if(first->getPlaceSortie()[t]->getNbPlaces() <= minPlaceFirst)
+				minPlaceFirst = first->getPlaceSortie()[t]->getNbPlaces();
+
+		int minPlaceSecond = 9999;
+		for(int t = 0 ; t < second->getPlaceSortie().size() ; t++)
+			if(second->getPlaceSortie()[t]->getNbPlaces() <= minPlaceSecond)
+				minPlaceSecond = second->getPlaceSortie()[t]->getNbPlaces();
+
+		return minPlaceFirst < minPlaceSecond;
+	});
+}
+
+/**
+Methode qui trie les places selon les plus proche de la sortie
+*/
+
+ListePlaces * ListePlaces::getPlaceVide(int taille)
+{
+	ListePlaces * toReturn = new ListePlaces();
+	for(int i = 0; i < this->listePlaces.size() ; i++)
+	{
+		if(listePlaces[i]->getNumeroVehicule() == -1 && listePlaces[i]->getTaillePlace() == taille)
+			toReturn->ajouterPlace(this->listePlaces[i]);
+	}
+	return toReturn;
 }
