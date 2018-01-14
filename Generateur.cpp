@@ -12,7 +12,7 @@ Generateur::Generateur(string file)
 }
 
 /**
-	Methode qui genere des missions entre une plage horaire pour un nombre de vehicule précisé
+	Methode qui genere des missions entre une plage horaire pour un nombre de vehicule prÃ©cisÃ©
 */
 void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 {
@@ -26,14 +26,14 @@ void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 		{
 			Date dateFinJour(dateDebut,23,59);
 
-			// Génération aléatoire du début de la mission
+			// GÃ©nÃ©ration alÃ©atoire du dÃ©but de la mission
 			Date dateDebutMission = dateDebut;
 			int heureRandDebut = rand() % 6;
 			int minuteRandDebut = rand() % 59;
 			dateDebutMission.ajouterHeure(heureRandDebut);
 			dateDebutMission.ajouterMinutes(minuteRandDebut);
 
-			// Génération aléatoire de la fin de la mission
+			// GÃ©nÃ©ration alÃ©atoire de la fin de la mission
 			Date dateFinMission = dateDebutMission;
 			int heureRandFin = rand() % 3 + 2;
 			int minuteRandFin = rand() % 59;
@@ -126,7 +126,7 @@ void Generateur::generateParkingFile(ListePlaces parking)
 		cerr << "Impossible d'ouvrir le fichier !" << endl;
 }
 /**
-	Methode qui genere un parking de type A pour un nombre de place et de colonnes précis.
+	Methode qui genere un parking de type A pour un nombre de place et de colonnes prÃ©cis.
 */
 void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 {
