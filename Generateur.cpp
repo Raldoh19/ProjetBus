@@ -12,7 +12,7 @@ Generateur::Generateur(string file)
 }
 
 /**
-	Methode qui genere des missions entre une plage horaire pour un nombre de vehicule prÃ©cisÃ©
+	Methode qui genere des missions entre une plage horaire pour un nombre de vehicule précisé
 */
 void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 {
@@ -26,14 +26,14 @@ void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 		{
 			Date dateFinJour(dateDebut,23,59);
 
-			// GÃ©nÃ©ration alÃ©atoire du dÃ©but de la mission
+			// Génération aléatoire du début de la mission
 			Date dateDebutMission = dateDebut;
 			int heureRandDebut = rand() % 6;
 			int minuteRandDebut = rand() % 59;
 			dateDebutMission.ajouterHeure(heureRandDebut);
 			dateDebutMission.ajouterMinutes(minuteRandDebut);
 
-			// GÃ©nÃ©ration alÃ©atoire de la fin de la mission
+			// Génération aléatoire de la fin de la mission
 			Date dateFinMission = dateDebutMission;
 			int heureRandFin = rand() % 3 + 2;
 			int minuteRandFin = rand() % 59;
@@ -76,12 +76,12 @@ void Generateur::generateParkingFile(ListePlaces parking)
 		for(int i = 0 ; i < parking.getNbPlaces(); i++)
 		{
 			Place * currentPlace = parking.getPlaceIndex(i);
-			// ON DOIT AVOIR 70% de grande place et 30% de petites
+			// ON DOIT AVOIR 30% de grande place et 20% de petites
 			double pourcentage = (double)i/parking.getNbPlaces();
 			if(pourcentage <= 0.7)
-				currentPlace->setTaillePlace(3);
-			else
 				currentPlace->setTaillePlace(2);
+			else
+				currentPlace->setTaillePlace(3);
 
 			fichier << currentPlace->getNumeroPlace() << ";" << currentPlace->getTaillePlace() << ";\n"; 
 		}
@@ -126,7 +126,7 @@ void Generateur::generateParkingFile(ListePlaces parking)
 		cerr << "Impossible d'ouvrir le fichier !" << endl;
 }
 /**
-	Methode qui genere un parking de type A pour un nombre de place et de colonnes prÃ©cis.
+	Methode qui genere un parking de type A pour un nombre de place et de colonnes précis.
 */
 void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 {
@@ -162,12 +162,12 @@ void Generateur::generateVehicules(int nbVehicule)
 
 	for(int i = 0; i < nbVehicule ; i++)
 	{
-		// ON DOIT AVOIR 70% de grand bus et 30% de petit
+		// ON DOIT AVOIR 30% de grand bus et 70% de petit
 		double pourcentage = i/(double)nbVehicule;
 		if(pourcentage <= 0.7)
-			vehiculeToReturn.push_back(Vehicule(i, 3));
-		else
 			vehiculeToReturn.push_back(Vehicule(i, 2));
+		else
+			vehiculeToReturn.push_back(Vehicule(i, 3));
 	}
 	// Ecriture dans le fichier
 	ofstream fichier(this->file+"Vehicule.csv", ios::out | ios::trunc);

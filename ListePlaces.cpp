@@ -3,7 +3,7 @@
 #include "Place.h"
 #include <algorithm>
 /**
-Constrcuteur par dÃ©faut
+Constrcuteur par défaut
 */
 ListePlaces::ListePlaces()
 {
@@ -11,7 +11,7 @@ ListePlaces::ListePlaces()
 }
 
 /**
-Getter pour le nombre de place prÃ©sent
+Getter pour le nombre de place présent
 */
 int ListePlaces::getNbPlaces()
 {
@@ -60,7 +60,7 @@ void ListePlaces::afficherListePlaces()
 
 /**
 Methode qui retourne un objet Place avec le meme ID recherche
-Le crÃ©e au cas ou ce dernier n'existe pas
+Le crée au cas ou ce dernier n'existe pas
 */
 Place* ListePlaces::recherchePlace(std::string placeCherche)
 {
@@ -86,7 +86,7 @@ void ListePlaces::afficherSuite()
 }
 
 /**
-Retourne l'objet Place situÃ© a l'index index
+Retourne l'objet Place situé a l'index index
 */
 Place * ListePlaces::getPlaceIndex(int index)
 {
@@ -150,7 +150,7 @@ ListePlaces * ListePlaces::subList(int indexDepart, int indexFin)
 }
 
 /**
-Retourne la liste de place entiÃ¨res
+Retourne la liste de place entières
 */
 std::vector<Place*> ListePlaces::getListePlaces(){
 	return listePlaces;

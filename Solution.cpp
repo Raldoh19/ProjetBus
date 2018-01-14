@@ -5,9 +5,9 @@
 using namespace std;
 
 /**
-	Constructeur de la solution, il prendra en paramÃ¨tre:
+	Constructeur de la solution, il prendra en paramètre:
 	parking : le parking initial
-	vehicules : les vehicules concernÃ©s par cette solution
+	vehicules : les vehicules concernés par cette solution
 */
 Solution::Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
 {
@@ -16,9 +16,9 @@ Solution::Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
 }
 
 /**
-	Methode de verification de la solution prendra en paramÃ¨tre:
-	Une solution: Cette solution contient les caracteristiques et le parking final, on se servira de ces donnÃ©es pour voir si notre solution est correct.
-	Parking : Le parking initial avant toutes itÃ©rations
+	Methode de verification de la solution prendra en paramètre:
+	Une solution: Cette solution contient les caracteristiques et le parking final, on se servira de ces données pour voir si notre solution est correct.
+	Parking : Le parking initial avant toutes itérations
 	dateInitiale et dateFin : La plage horaire pour verifier cette solution
 */
 bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date dateInitiale,Date dateFin)
@@ -59,7 +59,7 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date d
 				
 			}
 		}
-		// On verifie que tout les vehicules peuvent acceder a leur place assignÃ©
+		// On verifie que tout les vehicules peuvent acceder a leur place assigné
 		for(int i = 0 ; i < allMissions.size() ; i++)
 		{
 			for(int j = 0; j < caracteristiques.size(); j++)
@@ -100,7 +100,7 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date d
 }
 
 /**
-	Methode qui renvoie toute les places libre dans un parking donnÃ©
+	Methode qui renvoie toute les places libre dans un parking donné
 */
 vector<Place> Solution::getPlacesVides(ListePlaces parking)
 {
@@ -116,7 +116,7 @@ vector<Place> Solution::getPlacesVides(ListePlaces parking)
 }
 
 /**
-	Algorithme qui renvoie l'Ã©tat du parking au moment dateFin, et cela en gÃ©nÃ©rant des caractÃ©ristiques qui symbolisent les entrÃ©es au parking, tandis que les missions
+	Algorithme qui renvoie l'état du parking au moment dateFin, et cela en générant des caractéristiques qui symbolisent les entrées au parking, tandis que les missions
 	symbolisent les sorties
 */
 ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
