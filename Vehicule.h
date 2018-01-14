@@ -10,7 +10,6 @@ private:
 	int ID;
 	int tailleVehicule;
 	std::vector<Mission> missions;
-	int nbMissions;
 public:
 	Vehicule(int id, int taille);
 	~Vehicule();
@@ -21,11 +20,9 @@ public:
 	void ajouterMission(Mission m);
 	void retirerMission(Mission m);
 	void afficherMissions();
-	Date premierDepartApres(Date date);
 	std::vector<Mission> getMissions();
 	int getNbMissions();
-
-	bool doitPartirEntre(Date dateD,Date dateF);
+	bool operator<(const Vehicule& veh);
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include "Caracteristique.h"
 #include <string>
 #include <vector>
+
 class Solution
 {
 private:
@@ -13,30 +14,10 @@ private:
 	ListePlaces etatParking;
 	std::vector<Caracteristique> caracteristiques;
 public:
-	Solution(void){}
-	~Solution(void){}
-
-	Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
-	{
-		etatParking = parking;
-		vehiculesConcernes = vehicules;
-	}
-
-	void generateCarac();
+	Solution(ListePlaces parking,std::vector<Vehicule> vehicules);
 	ListePlaces nouveauParking(Date dateDebut, Date dateFin);
-	std::vector<Caracteristique> getCaracteristiques();
-	std::vector<Caracteristique> trierCaracteristiques(std::vector<Caracteristique> caracteristiques);
 	bool verificationSolution(Solution solution,ListePlaces parkingInitial,Date dateInitiale,Date dateFin);
-	std::vector<std::pair<Vehicule*,int>> chercheBusADeplacer(Date date);
 	std::vector<Place> getPlacesVides(ListePlaces parking);
-	bool peutSeGarer(Place p);
-	bool peutPartir(Place p);
-	int placeDuBus(int id);
-	void placesEligibles(std::vector<std::string>* placesVide);
-	Place* trouverPlaceNumero(std::string numero);
-	bool peutSortirSolution(Place * p);
-	bool pourraPartir(Place p,Date date);
-	int getIdBus(int numero,std::vector<Vehicule> listeBus);
 };
 #endif;
 

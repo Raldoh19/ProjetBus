@@ -11,7 +11,7 @@ private:
 	int mois;
 	int annee;
 public:
-	Date();
+	Date(){};
 	Date(int mn,int h,int j, int m, int a);
 	Date(Date copie, int h, int mn);
 	bool estAvant(Date d);
@@ -19,7 +19,6 @@ public:
 	bool estEgale(Date d);
 	int getMinutes();
 	int getHeures();
-	//void ajouterMinute(int);
 	void ajouterHeure(int);
 	void ajouterJour(int);
 	void ajouterMois(int);
@@ -28,7 +27,6 @@ public:
 	std::string getHour();
 	std::string toString();
 	void ajouterMinutes(int nbMinutes);
-	~Date(void);
 };
 
 #endif

@@ -11,27 +11,10 @@ private:
 	std::string numeroPlace;
 	Date dateArrive;
 public:
-	Caracteristique(void);
 	Caracteristique(int, std::string, Date);
-	~Caracteristique(void);
-
-	int getIdVehicule(){
-		return idVehicule;
-	}
-
-	std::string getNumeroPlace(){
-		return numeroPlace;
-	}
-
-	Date getDateArrivee(){
-		return dateArrive;
-	}
-
-	void toString()
-	{
-		std::cout << "Le vehicule " << idVehicule << " est stationné en " << numeroPlace << std::endl;
-		std::cout << "Heure arrive: " << dateArrive.toString() << std::endl;
-
-	}
+	int getIdVehicule();
+	std::string getNumeroPlace();
+	Date getDateArrivee();
+	void toString();
 };
 #endif

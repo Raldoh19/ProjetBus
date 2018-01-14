@@ -4,11 +4,23 @@
 
 using namespace std;
 
-std::vector<Caracteristique> Solution::getCaracteristiques(){
-	return caracteristiques;
+/**
+	Constructeur de la solution, il prendra en paramètre:
+	parking : le parking initial
+	vehicules : les vehicules concernés par cette solution
+*/
+Solution::Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
+{
+	etatParking = parking;
+	vehiculesConcernes = vehicules;
 }
 
-
+/**
+	Methode de verification de la solution prendra en paramètre:
+	Une solution: Cette solution contient les caracteristiques et le parking final, on se servira de ces données pour voir si notre solution est correct.
+	Parking : Le parking initial avant toutes itérations
+	dateInitiale et dateFin : La plage horaire pour verifier cette solution
+*/
 bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date dateInitiale,Date dateFin){
 int nombreTeleportation = 0;
 	// ON VA LISTER TOUTES LES MISSIONS DU JOUR EN LES METTANT AVEC L'ID DU VEHICULE
@@ -39,7 +51,8 @@ int nombreTeleportation = 0;
 					if(!placeVehicule->peutSortir())
 					{
 						ListePlaces * sortieChemin = placeVehicule->getPlaceSortie();
-						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() <<std::endl;
+						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() << std::endl;
+
 						nombreTeleportation++;
 					}
 					placeVehicule->setNumeroVehicule(-1);
@@ -54,10 +67,26 @@ int nombreTeleportation = 0;
 			{
 				if(dateInitiale.estEgale(caracteristiques[j].getDateArrivee()) && (allMissions[i].second.getDateArrivee().estEgale(dateInitiale) ))
 				{
-					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != -1 )
+					Vehicule infoVehicule(0,0);
+					for(int indexVeh = 0; indexVeh < this->vehiculesConcernes.size() ; indexVeh++)
 					{
-						std::cout<<"--VERIFICATION SOLUTION-- Place " << caracteristiques[j].getNumeroPlace() << " non vide " << std::endl;
+						if(vehiculesConcernes[indexVeh].getID() == parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule())
+						{
+							infoVehicule = vehiculesConcernes[indexVeh];
+							break;
+						}
 					}
+
+					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != -1 && parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() != caracteristiques[j].getIdVehicule())
+					{
+						std::cout<<"--VERIFICATION SOLUTION-- " << std::endl;
+						std::cout<<"Impossible pour"<< caracteristiques[j].getIdVehicule() <<"d'acceder a " << caracteristiques[j].getNumeroPlace() << "[occupe par: "<< parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() <<"]" <<std::endl;
+					}
+					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getTaillePlace() < infoVehicule.getTailleVehicule() )
+					{
+						std::cout<<"--VERIFICATION SOLUTION-- Place " << caracteristiques[j].getNumeroPlace() << " de taille invalide ! " << std::endl;
+					}
+
 					parking.getPlace(caracteristiques[j].getNumeroPlace())->setNumeroVehicule(caracteristiques[j].getIdVehicule());
 				}
 			}
@@ -71,77 +100,8 @@ int nombreTeleportation = 0;
 	return true;
 }
 
-
-std::vector<Caracteristique> Solution::trierCaracteristiques(std::vector<Caracteristique> caracteristiques){
-	std::vector<Caracteristique> caracTriee;
-	unsigned int i,indiceMin;
-	
-	while(caracteristiques.size() > 0){
-		indiceMin = 0;
-		for(i = 0; i < caracteristiques.size();i++){
-			if(caracteristiques[i].getDateArrivee().estAvant(caracteristiques[indiceMin].getDateArrivee())){
-				indiceMin = i;
-			}
-		}
-		caracTriee.push_back(caracteristiques[indiceMin]);
-		caracteristiques.erase(caracteristiques.begin()+indiceMin);
-	}
-	return caracTriee;
-}
-/*
-	Methodes TODO : 
-		- void placesEligibles(vector<string>* placesVides) : modifie placesVides pour ne garder que les places où l'on peut se garer.
-		Comment savoir si le bus pourra partir ? il faut regarder les places de sortie, si elle est occupée, voir si le bus dessus a une mission avec dateDepart avant la prochaine mission du bus qui se gare
-		un beau petit bordel quoi :(((((((((
-		*/
-
-/*
-	recupere les places auxquels on peut accéder
-*/
-void Solution::placesEligibles(vector<string>* placesVide){
-	unsigned int i;
-	
-	Place* placeAVerif;
-
-	for(i = 0; i < placesVide->size(); i++){
-		placeAVerif = trouverPlaceNumero(placesVide->at(i));
-		if(placeAVerif != NULL){
-			if(placeAVerif->peutAcceder()){
-
-			}
-		}
-	}
-}
-
-
-
-
-int Solution::placeDuBus(int id){
-	unsigned int i = 0;
-
-	while(i < etatParking.getNbPlaces()){
-		if(etatParking.getListePlaces().at(i)->getNumeroVehicule() == id){
-			return i;
-		}
-		i++;
-	}
-	return -1;
-}
-
-
-Place* Solution::trouverPlaceNumero(string numero){
-	unsigned int i = 0;
-
-	while(i < etatParking.getNbPlaces()){
-		if(etatParking.getListePlaces().at(i)->getNumeroPlace().compare(numero) == 0){
-			return etatParking.getListePlaces().at(i);
-		}
-		i++;
-	}
-	return NULL;
-}
-/*
-	Parcours un parking, recupere les adresses des places vides de ce parking
+/**
+	Methode qui renvoie toute les places libre dans un parking donné
 */
 vector<Place> Solution::getPlacesVides(ListePlaces parking)
 {
@@ -156,43 +116,10 @@ vector<Place> Solution::getPlacesVides(ListePlaces parking)
 	return idPlacesVides;
 }
 
-
-/*Methode qui renvoie un vecteur qui contient des couples (adresse de vehicule, entier)
-										adresse de vehicule = l'adresse du vehicule qui doit bouger
-										entier = ID de la mission qui le fait bouger
+/**
+	Algorithme qui renvoie l'état du parking au moment dateFin, et cela en générant des caractéristiques qui symbolisent les entrées au parking, tandis que les missions
+	symbolisent les sorties
 */
-vector<pair<Vehicule*,int>> Solution::chercheBusADeplacer(Date date){
-	vector<pair<Vehicule*,int>> listeDesVehicules;
-	unsigned int indexVehicules,indexMission;
-	//Pour tous les vehicules concernes
-	for(indexVehicules = 0; indexVehicules < vehiculesConcernes.size(); indexVehicules++){
-		//pour chaque mission
-		for(indexMission = 0; indexMission < vehiculesConcernes[indexVehicules].getNbMissions();indexMission++){
-			//si l'heure de depart/arrive correspond a l'heure en cours, alors il va falloir deplacer le bus
-			if(vehiculesConcernes[indexVehicules].getMissions().at(indexMission).getDateArrivee().estEgale(date) || vehiculesConcernes[indexVehicules].getMissions().at(indexMission).getDateDepart().estEgale(date)){
-				listeDesVehicules.push_back(make_pair(&vehiculesConcernes[indexVehicules],indexMission));
-			}
-		}
-	}
-	return listeDesVehicules;
-}
-
-
-
-
-void Solution::generateCarac()
-{
-	// Generation des caracteristiques de la solution deja disponible
-	for(int i = 0 ; i < etatParking.getNbPlaces() ; i++)
-	{
-		if(etatParking.getPlaceIndex(i)->getNumeroVehicule() != -1)
-		{
-			caracteristiques.push_back(Caracteristique(etatParking.getPlaceIndex(i)->getNumeroVehicule(), etatParking.getPlaceIndex(i)->getNumeroPlace(), Date(0,0,0,0,0)));
-		}
-	}
-}
-
-
 ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 {
 			
@@ -216,6 +143,8 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 		for(int i = 0 ; i < allMissions.size() ; i++)
 		{
 			bool placeTrouvee = false;
+			
+			
 			if(allMissions[i].second.getDateDepart().estEgale(dateDebut))
 			{
 				Place * placeVehicule = etatParking.getPlaceVehicule(allMissions[i].first.getID());
@@ -223,10 +152,8 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				{
 					if(!placeVehicule->peutSortir())
 						nombreTeleportation++;
-
 					placeVehicule->setNumeroVehicule(-1);
 				}
-				
 			}
 			if(allMissions[i].second.getDateArrivee().estEgale(dateDebut))
 			{
@@ -239,7 +166,16 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				for(int k = 0; k < placeVide.size();k++)
 				{
 					Place * currentPlace = etatParking.getPlace(placeVide[k].getNumeroPlace());
-					if(currentPlace->peutAcceder() && currentPlace->getNumeroVehicule() == -1)
+					Vehicule infoVehicule(0,0);
+					for(int indexVeh = 0; indexVeh < this->vehiculesConcernes.size() ; indexVeh++)
+					{
+						if(vehiculesConcernes[indexVeh].getID() == allMissions[i].first.getID())
+						{
+							infoVehicule = vehiculesConcernes[indexVeh];
+							break;
+						}
+					}
+					if(currentPlace->peutAcceder(infoVehicule.getTailleVehicule() ) && currentPlace->getNumeroVehicule() == -1)
 					{
 						this->caracteristiques.push_back(Caracteristique(allMissions[i].first.getID(),currentPlace->getNumeroPlace(), dateDebut));
 						currentPlace->setNumeroVehicule(allMissions[i].first.getID());
@@ -247,6 +183,7 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 						break;
 					}
 				}
+
 			}
 			if(placeTrouvee)
 			{
@@ -263,42 +200,4 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 	}
 	std::cout << "Solution trouve avec : " << nombreTeleportation << " teleportations, allez !" << std::endl;
 	return etatParking;
-}
-
-bool Solution::pourraPartir(Place p,Date date)
-{
-	unsigned int i,j;
-	
-	for(i = 0; i < p.getPlaceSortie()->getNbPlaces(); i++)
-	{
-		Place * currentPlace = p.getPlaceSortie()->getListePlaces()[i];
-		int idBusConcerne = currentPlace->getNumeroVehicule();
-		if(idBusConcerne == -1)
-		{
-			break;
-		}
-
-		Vehicule busConcerne = vehiculesConcernes.at(this->getIdBus(idBusConcerne,vehiculesConcernes));
-		
-		for(j = 0;j < busConcerne.getNbMissions() ; j++)
-		{
-			if(!busConcerne.getMissions()[j].getDateDepart().estAvant(date))
-			{
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-int Solution::getIdBus(int numero,vector<Vehicule> listeBus){
-	int i = 0;
-
-	while(i < listeBus.size()){
-		if(numero == listeBus.at(i).getID()){
-			return i;
-		}
-		i++;
-	}
-	return -1;
 }

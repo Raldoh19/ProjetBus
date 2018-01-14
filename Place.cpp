@@ -1,6 +1,6 @@
 #include "Place.h"
 #include "ListePlaces.h"
-#include "Date.h"
+
 Place::Place()
 {
 
@@ -63,15 +63,15 @@ ListePlaces* Place::getPlaceSortie(){
 
 void Place::afficher()
 {
-	std::cout << "Place numero: " << this->numeroPlace;
+	std::cout << "Place numero [taille:" << this->taillePlace << "] : " << this->numeroPlace;
 	if(this->numeroVehicule == -1)
 		std::cout << " - LIBRE" << std::endl;
 	else
 		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
 
-	std:: cout << " Chemin d'accès: ";
+	std:: cout << " Chemin d'accès [" << this->placeAcces->getNbPlaces() << "] : ";
 	this->placeAcces->afficherSuite();
-	std:: cout << " Chemin de sortie: ";
+	std:: cout << " Chemin de sortie: [" << this->placeSortie->getNbPlaces() << "] : ";
 	this->placeSortie->afficherSuite();
 }
 
@@ -84,7 +84,7 @@ void Place::setPlaceSortie(ListePlaces * ps)
 	this->placeSortie = ps;
 }
 
-bool Place::peutAcceder()
+bool Place::peutAcceder(int taille)
 {
 	if(placeAcces == NULL)
 	{
@@ -96,6 +96,9 @@ bool Place::peutAcceder()
 		if(currentPlace->getNumeroVehicule() != -1)
 			return false;
 	}
+	if(this->getTaillePlace() != taille)
+		return false;
+
 	return true;
 }
 

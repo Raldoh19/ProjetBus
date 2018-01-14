@@ -3,11 +3,17 @@
 #include <ctime>
 #include <fstream>
 
+/**
+Constructeur pour le generateur, on lui indique le dossier ou devront se situer les generations
+*/
 Generateur::Generateur(string file)
 {
 	this->file= file;
 }
 
+/**
+	Methode qui genere des missions entre une plage horaire pour un nombre de vehicule précisé
+*/
 void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 {
 	std::vector<Mission> missionToReturn;
@@ -44,7 +50,7 @@ void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 		}
 	}
 	// Ecriture dans le fichier
-	ofstream fichier(this->file+"Mission.csv", ios::out | ios::trunc);  // ouverture en écriture avec effacement du fichier ouvert
+	ofstream fichier(this->file+"Mission.csv", ios::out | ios::trunc);
     if(fichier)
     {
 		for(int i = 0 ; i < missionToReturn.size(); i++)
@@ -58,7 +64,9 @@ void Generateur::generateMissions(int nbVehicule, Date dateDebut, Date dateFin)
 		cerr << "Impossible d'ouvrir le fichier !" << endl;
 }
 
-
+/**
+	Methode qui genere un parking de type A pour un nombre de place et de colonnes précis.
+*/
 void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 {
 	int nbLigne = nombrePlace / nbColonne;
@@ -69,17 +77,13 @@ void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 		for(int i = 0 ; i < nbLigne ; i++)
 		{
 			// ON DOIT AVOIR 70% de grande place et 30% de petites
-			double pourcentage = (double)i/nbLigne;
-			if(pourcentage <= 0.7)
-				placeColonnes->ajouterPlace(new Place(std::to_string(j).append(std::to_string(i)).append("P"), 3));
-			else
-				placeColonnes->ajouterPlace(new Place(std::to_string(j).append(std::to_string(i)).append("P"), 2));
+			placeColonnes->ajouterPlace(new Place(std::to_string(j).append(std::to_string(i)).append("P"), 0));
 		}
 		for(int indexPlace = 0 ; indexPlace < placeColonnes->getNbPlaces() ; indexPlace++)
 		{
 			Place * currentPlace = placeColonnes->getPlaceIndex(indexPlace);
 			ListePlaces * cheminAcces = placeColonnes->subList(0, indexPlace);
-			ListePlaces * cheminSortie = placeColonnes->subList(indexPlace, placeColonnes->getNbPlaces());
+			ListePlaces * cheminSortie = placeColonnes->subList(indexPlace+1, placeColonnes->getNbPlaces());
 			if(cheminAcces)
 				currentPlace->setPlaceAcces(cheminAcces);
 			if(cheminSortie)
@@ -87,16 +91,84 @@ void Generateur::generateParkingA(int nombrePlace, int nbColonne)
 			parking.ajouterPlace(currentPlace);
 		}
 	}
-	parking.afficher();
+	// Ecriture dans le fichier
+	ofstream fichier(this->file+"Emplacement.csv", ios::out | ios::trunc);
+    if(fichier)
+    {
+		for(int i = 0 ; i < parking.getNbPlaces(); i++)
+		{
+			
+			Place * currentPlace = parking.getPlaceIndex(i);
+			// ON DOIT AVOIR 70% de grande place et 30% de petites
+			double pourcentage = (double)i/parking.getNbPlaces();
+			if(pourcentage <= 0.7)
+				currentPlace->setTaillePlace(3);
+			else
+				currentPlace->setTaillePlace(2);
+
+			fichier << currentPlace->getNumeroPlace() << ";" << currentPlace->getTaillePlace() << ";\n"; 
+		}
+        fichier.close();
+    }
+    else
+		cerr << "Impossible d'ouvrir le fichier !" << endl;
+
+	ofstream fichier2(this->file+"Trajet.csv", ios::out | ios::trunc);
+    if(fichier2)
+    {
+		for(int i = 0 ; i < parking.getNbPlaces(); i++)
+		{
+			Place * currentPlace = parking.getPlaceIndex(i);
+			std::string generatedStringAcces = "";
+			std::string generatedStringSortie = "";
+			for(int k= 0 ; k < currentPlace->getPlaceAcces()->getNbPlaces(); k++)
+			{
+				generatedStringAcces = generatedStringAcces.append(currentPlace->getPlaceAcces()->getPlaceIndex(k)->getNumeroPlace());
+				if(k != currentPlace->getPlaceAcces()->getNbPlaces() - 1)
+					generatedStringAcces = generatedStringAcces.append(",");
+			}
+			for(int k= 0 ; k < currentPlace->getPlaceSortie()->getNbPlaces(); k++)
+			{
+				generatedStringSortie = generatedStringSortie.append(currentPlace->getPlaceSortie()->getPlaceIndex(k)->getNumeroPlace());
+				if(k != currentPlace->getPlaceSortie()->getNbPlaces() - 1)
+					generatedStringSortie = generatedStringSortie.append(",");
+			}
+
+			fichier2 << currentPlace->getNumeroPlace() << ";" << generatedStringAcces << ";E\n";
+			fichier2 << currentPlace->getNumeroPlace() << ";" << generatedStringSortie << ";S\n";
+		}
+        fichier2.close();
+    }
+    else
+		cerr << "Impossible d'ouvrir le fichier !" << endl;
 }
 
-void Generateur::generateParkingB(int nombrePlace,int nbColonne){
-	int nbLigne = nombrePlace / nbColonne;
-	ListePlaces parking;
-
-}
-
-Generateur::~Generateur(void)
+Generateur::~Generateur(){}
+/**
+Methode qui genere des bus et les stock dans un fichier */
+void Generateur::generateVehicules(int nbVehicule)
 {
+	std::vector<Vehicule> vehiculeToReturn;
 
+	for(int i = 0; i < nbVehicule ; i++)
+	{
+		// ON DOIT AVOIR 70% de grand bus et 30% de petit
+		double pourcentage = i/(double)nbVehicule;
+		if(pourcentage <= 0.7)
+			vehiculeToReturn.push_back(Vehicule(i, 3));
+		else
+			vehiculeToReturn.push_back(Vehicule(i, 2));
+	}
+	// Ecriture dans le fichier
+	ofstream fichier(this->file+"Vehicule.csv", ios::out | ios::trunc);
+    if(fichier)
+    {
+		for(int i = 0 ; i < vehiculeToReturn.size(); i++)
+		{
+			fichier << vehiculeToReturn[i].getID() <<";;" << vehiculeToReturn[i].getTailleVehicule() <<";0;0;;;\n";
+		}
+        fichier.close();
+    }
+    else
+		cerr << "Impossible d'ouvrir le fichier !" << endl;
 }

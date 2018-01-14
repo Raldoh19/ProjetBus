@@ -2,6 +2,7 @@
 #include "Place.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -35,21 +36,14 @@ Date createDate(string chaine)
 	}
 }
 
-Parser::Parser(void)
-{
-	this->file = "";
-}
-
 Parser::Parser(string file)
 {
 	this->file= file;
 }
 
-void Parser::setFile(string file)
-{
-	this->file= file;
-}
-
+/**
+Methode qui genere le parking et lie les différentes places au véhicules/missions ainsi qu'au trajet pour y acceder/sortir
+*/
 ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*> buses)
 {
 	ListePlaces * parking = new ListePlaces();
@@ -78,71 +72,7 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 				{
 					try
 					{
-						int numeroMission = stoi(ligneDecoupe[2]);
-						bool missionChecked = false;
-						int busID = 0;
-						for(int i = 0; i < missions.size(); i++)
-						{
-							bool alreadyCalc = false;
-							if(missions[i].getID() == numeroMission)
-							{
-								if(indiceVehicule >= buses.size())
-								{
-									bool madeIt = false;
-									busID = 0;
-									while(busID < buses.size() && madeIt == false)
-									{
-										Mission curMission = buses[busID]->getMissions()[buses[busID]->getMissions().size()-1];
-										if(curMission.getDateArrivee().estAvant(missions[i].getDateDepart()))
-										{
-											for(int m = 0; m < buses[busID]->getNbMissions(); m++)
-											{
-												if(buses[busID]->getMissions()[m].getID() == missions[i].getID())
-													alreadyCalc = true;
-											}
-											if(!alreadyCalc)
-												buses[busID]->ajouterMission(missions[i]);
-
-											parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[busID]->getID()));
-											missionChecked=true;
-											madeIt = true;
-											break;
-										}
-										busID++;
-									}
-								}
-								else
-								{
-									for(int m = 0; m < buses[indiceVehicule]->getNbMissions(); m++)
-									{
-										if(buses[indiceVehicule]->getMissions()[m].getID() == missions[i].getID())
-											alreadyCalc = true;
-									}
-									if(!alreadyCalc)
-										buses[indiceVehicule]->ajouterMission(missions[i]);
-
-									parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), buses[indiceVehicule]->getID()));
-									missionChecked=true;
-									busID = indiceVehicule;
-									indiceVehicule++;
-								}
-							}
-							if(missionChecked && i != 0)
-							{
-								if(missions[i].getDateDepart().estApres(missions[i-1].getDateDepart()))
-								{
-									for(int m = 0; m < buses[busID]->getNbMissions(); m++)
-									{
-										if(buses[busID]->getMissions()[m].getID() == missions[i].getID())
-											alreadyCalc = true;
-									}
-									if(!alreadyCalc)
-										buses[busID]->ajouterMission(missions[i]);
-
-									missionChecked = false;
-								}
-							}
-						}
+						parking->ajouterPlace(new Place(ligneDecoupe[0], stoi(ligneDecoupe[1]), stoi(ligneDecoupe[2])));
 					}
 					catch(invalid_argument ia)
 					{
@@ -153,11 +83,81 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 				throw new exception("[Parking] Fichier CSV mal configure");
 		}
 		fichier.close();
+		this->generateTrajet(*parking);
+		// On assigne les missions au bus, chaque bus aura ses missions du jour
+		int indexMissions = 0;
+		while(indexMissions < missions.size())
+		{
+			for(int i = 0 ; i < buses.size(); i++)
+			{
+				buses[i]->ajouterMission(missions[indexMissions]);
+				missions[indexMissions].afficher();
+				indexMissions++;
+				if(indexMissions < missions.size())
+				{
+					while(missions[indexMissions].getDateDepart().estApres(missions[indexMissions-1].getDateArrivee()))
+					{
+						buses[i]->ajouterMission(missions[indexMissions]);
+						indexMissions++;
+						if(indexMissions >= missions.size())
+							break;
+					}
+				}
+				if(indexMissions >= missions.size())
+					break;
+			}
+			// On decalle le reste des missions d'un jour pour les reattribuer
+			for(int k = indexMissions; k < missions.size(); k++)
+				missions[k].plusOneDay();
+		}
+		// On trie les places par rapport a leur proximite de la sortie
+		parking->triListe();
+		// On trie les bus par rapport a leur premiere mission
+		sort(buses.begin(), buses.end(), [ ]( Vehicule* first, Vehicule* second )
+		{
+		   	if(first->getMissions().size() == 0 || second->getMissions().size() == 0)
+				return true;
+			return first->getMissions()[0] < second->getMissions()[0];
+		});
+
+		// On supprime les bus qui sont deja stationnés
+		vector<Vehicule> busAaffecter;
+		for(int i = 0 ; i < buses.size(); i++)
+		{
+			busAaffecter.push_back(*(buses[i]));
+		}
+		for(int i = 0 ; i < parking->getListePlaces().size(); i++)
+		{
+			int numVehicule = parking->getListePlaces()[i]->getNumeroVehicule();
+			if(numVehicule != -1)
+			{
+				int j = 0;
+				for(j = 0; j < busAaffecter.size() ; j++)
+					if(busAaffecter[j].getID() == numVehicule)
+						break;
+				busAaffecter.erase(busAaffecter.begin()+j);
+			}
+		}
+		// On doit affecter au bus non stationné les places proche de la sortie
+		
+		int indexPlace = 0;
+		for(int i = 0; i < busAaffecter.size(); i++)
+		{
+			Place * placeVide = parking->getPlaceVide(busAaffecter[i].getTailleVehicule())->getPlaceIndex(0);
+			if(placeVide)
+			{
+				std::string numPlaceVide = placeVide->getNumeroPlace();
+				parking->getPlace(numPlaceVide)->setNumeroVehicule(busAaffecter[i].getID());
+			}
+		}
 		return parking;
 	}
 	else throw new exception("[Parking] Impossible d'ouvrir le fichier!");
 }
 
+/**
+Methode qui genere les vehicules
+*/
 vector<Vehicule*> Parser::generateVehicules()
 {
 
@@ -190,6 +190,9 @@ vector<Vehicule*> Parser::generateVehicules()
 	else throw new exception("Impossible d'ouvrir le fichier!");
 }
 
+/**
+Methode qui genere les missions de tout les bus
+*/
 vector<Mission> Parser::generateMissions()
 {
 	vector<Mission> missionsGeneres;
@@ -203,10 +206,12 @@ vector<Mission> Parser::generateMissions()
 			int nombreElement = split(ligneDecoupe, ligne,';');
 			if(nombreElement >= 9)
 			{
+
 				Date dateDepart = createDate(ligneDecoupe[1]);
 				Date dateArrivee = createDate(ligneDecoupe[2]);
 				if(dateArrivee.estAvant(dateDepart))
 					dateArrivee.ajouterJour(1);
+
 				missionsGeneres.push_back(Mission(stoi(ligneDecoupe[0]), dateArrivee, dateDepart));
 			}
 			else
@@ -222,6 +227,9 @@ vector<Mission> Parser::generateMissions()
 }
 
 
+/**
+Methode qui genere le trajet pour acceder ou sortir a une place
+*/
 void Parser::generateTrajet(ListePlaces parking)
 {
 	ifstream fichier(this->file+"Trajet.csv");
@@ -236,25 +244,29 @@ void Parser::generateTrajet(ListePlaces parking)
 			{
 				try
 				{
-					Place * placeConcerne = parking.recherchePlace(ligneDecoupe[0]);
-					string ES = ligneDecoupe[2];
-					ListePlaces * trajetPlace = new ListePlaces();
-					vector<string> placeDecoupe;
-					int nombrePlace = split(placeDecoupe, ligneDecoupe[1],',');
-					for(int i = 0;i < nombrePlace;i++)
+					Place * placeConcerne = parking.getPlace(ligneDecoupe[0]);
+					if(placeConcerne)
 					{
-						try
+						string ES = ligneDecoupe[2];
+						ListePlaces * trajetPlace = new ListePlaces();
+						vector<string> placeDecoupe;
+						int nombrePlace = split(placeDecoupe, ligneDecoupe[1],',');
+						for(int i = 0;i < nombrePlace;i++)
 						{
-						Place * placeGenere = parking.recherchePlace(placeDecoupe[i]);
-						trajetPlace->ajouterPlace(placeGenere);
-						}catch(exception * e)
-						{
+							try
+							{
+								Place * placeGenere = parking.getPlace(placeDecoupe[i]);
+								if(placeGenere)
+									trajetPlace->ajouterPlace(placeGenere);
+							}catch(exception * e)
+							{
+							}
 						}
+						if(ES == "S")
+							placeConcerne->setPlaceSortie(trajetPlace);
+						else
+							placeConcerne->setPlaceAcces(trajetPlace);
 					}
-					if(ES == "S")
-						placeConcerne->setPlaceSortie(trajetPlace);
-					else
-						placeConcerne->setPlaceAcces(trajetPlace);
 				}
 				catch(exception e)
 				{
@@ -267,9 +279,4 @@ void Parser::generateTrajet(ListePlaces parking)
 		fichier.close();
 	}
 	else throw new exception("Impossible d'ouvrir le fichier!");
-}
-
-
-Parser::~Parser(void)
-{
 }

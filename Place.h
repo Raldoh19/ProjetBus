@@ -28,7 +28,7 @@ public:
 	void setNumeroVehicule(int numeroVehicule);
 	void setPlaceAcces(ListePlaces*);
 	void setPlaceSortie(ListePlaces*);
-	bool peutAcceder();
+	bool peutAcceder(int taille);
 	bool peutSortir();
 	ListePlaces* getPlaceAcces();
 	ListePlaces* getPlaceSortie();
