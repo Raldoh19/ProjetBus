@@ -22,7 +22,9 @@ Solution::Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
 	dateInitiale et dateFin : La plage horaire pour verifier cette solution
 */
 bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date dateInitiale,Date dateFin){
-int nombreTeleportation = 0;
+	int nombreTeleportation = 0;
+	bool realisable = true;
+	std::cout<<"-- VERIFICATION SOLUTION -- Debut..."<<std::endl;
 	// ON VA LISTER TOUTES LES MISSIONS DU JOUR EN LES METTANT AVEC L'ID DU VEHICULE
 	vector<std::pair<Vehicule,Mission>> allMissions;
 	for(int i = 0 ; i < this->vehiculesConcernes.size() ; i++)
@@ -52,7 +54,7 @@ int nombreTeleportation = 0;
 					{
 						ListePlaces * sortieChemin = placeVehicule->getPlaceSortie();
 						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() << std::endl;
-
+						realisable = false;
 						nombreTeleportation++;
 					}
 					placeVehicule->setNumeroVehicule(-1);
@@ -81,10 +83,12 @@ int nombreTeleportation = 0;
 					{
 						std::cout<<"--VERIFICATION SOLUTION-- " << std::endl;
 						std::cout<<"Impossible pour"<< caracteristiques[j].getIdVehicule() <<"d'acceder a " << caracteristiques[j].getNumeroPlace() << "[occupe par: "<< parking.getPlace(caracteristiques[j].getNumeroPlace())->getNumeroVehicule() <<"]" <<std::endl;
+						realisable = false;
 					}
 					if(parking.getPlace(caracteristiques[j].getNumeroPlace())->getTaillePlace() < infoVehicule.getTailleVehicule() )
 					{
 						std::cout<<"--VERIFICATION SOLUTION-- Place " << caracteristiques[j].getNumeroPlace() << " de taille invalide ! " << std::endl;
+						realisable = false;
 					}
 
 					parking.getPlace(caracteristiques[j].getNumeroPlace())->setNumeroVehicule(caracteristiques[j].getIdVehicule());
@@ -97,7 +101,14 @@ int nombreTeleportation = 0;
 			dateInitiale.setTime(0,0);
 		}
 	}
-	return true;
+
+	if(realisable){
+		std::cout<<"-- VERIFICATION SOLUTION -- SOLUTION REALISABLE "<<std::endl;
+	}else{
+		std::cout<<"-- VERIFICATION SOLUTION -- SOLUTION NON REALISABLE "<<std::endl;
+	}
+	std::cout<<"-- VERIFICATION SOLUTION -- Terminee "<<std::endl;
+	return realisable;
 }
 
 /**

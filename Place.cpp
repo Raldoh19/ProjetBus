@@ -67,9 +67,9 @@ void Place::afficher()
 	if(this->numeroVehicule == -1)
 		std::cout << " - LIBRE" << std::endl;
 	else
-		std::cout << " - Vehicule stationné: " << this->numeroVehicule << std::endl;
+		std::cout << " - Vehicule stationne: " << this->numeroVehicule << std::endl;
 
-	std:: cout << " Chemin d'accès [" << this->placeAcces->getNbPlaces() << "] : ";
+	std:: cout << " Chemin d'acces [" << this->placeAcces->getNbPlaces() << "] : ";
 	this->placeAcces->afficherSuite();
 	std:: cout << " Chemin de sortie: [" << this->placeSortie->getNbPlaces() << "] : ";
 	this->placeSortie->afficherSuite();

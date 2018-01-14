@@ -91,7 +91,7 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 			for(int i = 0 ; i < buses.size(); i++)
 			{
 				buses[i]->ajouterMission(missions[indexMissions]);
-				missions[indexMissions].afficher();
+				//missions[indexMissions].afficher();
 				indexMissions++;
 				if(indexMissions < missions.size())
 				{
