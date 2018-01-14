@@ -42,7 +42,7 @@ Parser::Parser(string file)
 }
 
 /**
-Methode qui genere le parking et lie les différentes places au véhicules/missions ainsi qu'au trajet pour y acceder/sortir
+Methode qui genere le parking et lie les diffÃ©rentes places au vÃ©hicules/missions ainsi qu'au trajet pour y acceder/sortir
 */
 ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*> buses)
 {
@@ -120,7 +120,7 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 			return first->getMissions()[0] < second->getMissions()[0];
 		});
 
-		// On supprime les bus qui sont deja stationnés
+		// On supprime les bus qui sont deja stationnÃ©s
 		vector<Vehicule> busAaffecter;
 		for(int i = 0 ; i < buses.size(); i++)
 		{
@@ -138,7 +138,7 @@ ListePlaces* Parser::generateParking(vector<Mission> missions, vector<Vehicule*>
 				busAaffecter.erase(busAaffecter.begin()+j);
 			}
 		}
-		// On doit affecter au bus non stationné les places proche de la sortie
+		// On doit affecter au bus non stationnÃ© les places proche de la sortie
 		
 		int indexPlace = 0;
 		for(int i = 0; i < busAaffecter.size(); i++)

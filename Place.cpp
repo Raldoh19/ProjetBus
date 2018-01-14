@@ -11,8 +11,6 @@ Place::Place(string num,int taille, int numeroVehicule)
 	numeroPlace = num;
 	taillePlace = taille;
 	this->numeroVehicule = numeroVehicule;
-	placeAcces = new ListePlaces();
-	placeSortie = new ListePlaces();
 }
 
 Place::Place(string num,int taille)
@@ -20,8 +18,6 @@ Place::Place(string num,int taille)
 	numeroPlace = num;
 	taillePlace = taille;
 	this->numeroVehicule = -1;
-	placeAcces = new ListePlaces();
-	placeSortie = new ListePlaces();
 }
 
 Place::~Place(void)
@@ -53,11 +49,11 @@ void Place::setNumeroVehicule(int numeroVehicule){
 	this->numeroVehicule = numeroVehicule;
 }
 
-ListePlaces* Place::getPlaceAcces(){
+std::vector<ListePlaces*> Place::getPlaceAcces(){
 	return placeAcces;
 }
 
-ListePlaces* Place::getPlaceSortie(){
+std::vector<ListePlaces*> Place::getPlaceSortie(){
 	return placeSortie;
 }
 
@@ -69,32 +65,44 @@ void Place::afficher()
 	else
 		std::cout << " - Vehicule stationne: " << this->numeroVehicule << std::endl;
 
-	std:: cout << " Chemin d'acces [" << this->placeAcces->getNbPlaces() << "] : ";
-	this->placeAcces->afficherSuite();
-	std:: cout << " Chemin de sortie: [" << this->placeSortie->getNbPlaces() << "] : ";
-	this->placeSortie->afficherSuite();
+	std:: cout << " Chemin d'acces: " << std::endl;
+	for(int i = 0 ; i < this->placeAcces.size(); i++)
+	{
+		std::cout << "\t" << i+1 << " chemin possible : ";
+		this->placeAcces[i]->afficherSuite();
+	}
+
+	std:: cout << " Chemin de sortie: " << std::endl;
+	for(int i = 0 ; i < this->placeSortie.size(); i++)
+	{
+		std::cout << "\t" << i+1 << " chemin possible : ";
+		this->placeSortie[i]->afficherSuite();
+	}	
 }
 
 void Place::setPlaceAcces(ListePlaces * pa)
 {
-	this->placeAcces = pa;
+	this->placeAcces.push_back(pa);
 }
 void Place::setPlaceSortie(ListePlaces * ps)
 {
-	this->placeSortie = ps;
+	this->placeSortie.push_back(ps);
 }
 
 bool Place::peutAcceder(int taille)
 {
-	if(placeAcces == NULL)
+	if(placeAcces.size() == 0)
 	{
 		return true;
 	}
-	for(int i =0 ; i < this->placeAcces->getNbPlaces(); i++)
+	for(int t = 0; t < placeAcces.size() ; t++)
 	{
-		Place * currentPlace = this->placeAcces->getPlaceIndex(i);
-		if(currentPlace->getNumeroVehicule() != -1)
-			return false;
+		for(int i =0 ; i < this->placeAcces[t]->getNbPlaces(); i++)
+		{
+			Place * currentPlace = this->placeAcces[t]->getPlaceIndex(i);
+			if(currentPlace->getNumeroVehicule() != -1)
+				return false;
+		}
 	}
 	if(this->getTaillePlace() != taille)
 		return false;
@@ -104,20 +112,35 @@ bool Place::peutAcceder(int taille)
 
 bool Place::peutSortir()
 {
-	if(placeSortie == NULL)
+	if(placeSortie.size() == NULL)
 	{
 		return true;
 	}
-	for(int i =0 ; i < this->placeSortie->getNbPlaces(); i++)
+
+	for(int t = 0; t < placeSortie.size() ; t++)
 	{
-		Place * currentPlace = this->placeSortie->getPlaceIndex(i);
-		if(currentPlace->getNumeroVehicule() != -1)
-			return false;
+		for(int i =0 ; i < this->placeSortie[t]->getNbPlaces(); i++)
+		{
+			Place * currentPlace = this->placeSortie[t]->getPlaceIndex(i);
+			if(currentPlace->getNumeroVehicule() != -1)
+				return false;
+		}
 	}
+
 	return true;
 }
 
-bool Place::operator<(const Place& st)
+bool Place::operator<(Place& st)
 {
-	return this->placeSortie->getNbPlaces() < st.placeSortie->getNbPlaces();
+	int minPlaceThis = 9999;
+	for(int t = 0 ; t < placeSortie.size() ; t++)
+		if(this->placeSortie[t]->getNbPlaces() <= minPlaceThis)
+			minPlaceThis = this->placeSortie[t]->getNbPlaces();
+
+	int minPlaceAutre = 9999;
+	for(int t = 0 ; t < st.getPlaceSortie().size() ; t++)
+		if(st.getPlaceSortie()[t]->getNbPlaces() <= minPlaceAutre)
+			minPlaceAutre = st.getPlaceSortie()[t]->getNbPlaces();
+
+	return minPlaceThis < minPlaceAutre;
 }

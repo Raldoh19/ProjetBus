@@ -24,7 +24,7 @@ Solution::Solution(ListePlaces parking,std::vector<Vehicule> vehicules)
 bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date dateInitiale,Date dateFin){
 	int nombreTeleportation = 0;
 	bool realisable = true;
-	std::cout<<"-- VERIFICATION SOLUTION -- Debut..."<<std::endl;
+	std::cout<<"--VERIFICATION SOLUTION-- Debut..."<<std::endl;
 	// ON VA LISTER TOUTES LES MISSIONS DU JOUR EN LES METTANT AVEC L'ID DU VEHICULE
 	vector<std::pair<Vehicule,Mission>> allMissions;
 	for(int i = 0 ; i < this->vehiculesConcernes.size() ; i++)
@@ -52,8 +52,8 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date d
 				{
 					if(!placeVehicule->peutSortir())
 					{
-						ListePlaces * sortieChemin = placeVehicule->getPlaceSortie();
-						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() << std::endl;
+						//ListePlaces * sortieChemin = placeVehicule->getPlaceSortie();
+						std::cout<<"--VERIFICATION SOLUTION-- TELEPORTATION SORTIE vehicule " << placeVehicule->getNumeroVehicule() << " Place " << placeVehicule->getNumeroPlace() << std::endl;
 						realisable = false;
 						nombreTeleportation++;
 					}
@@ -103,16 +103,17 @@ bool Solution::verificationSolution(Solution solution,ListePlaces parking,Date d
 	}
 
 	if(realisable){
-		std::cout<<"-- VERIFICATION SOLUTION -- SOLUTION REALISABLE "<<std::endl;
+		std::cout<<"--VERIFICATION SOLUTION-- SOLUTION REALISABLE "<<std::endl;
 	}else{
-		std::cout<<"-- VERIFICATION SOLUTION -- SOLUTION NON REALISABLE "<<std::endl;
+		std::cout<<"--VERIFICATION SOLUTION-- SOLUTION NON REALISABLE "<<std::endl;
 	}
-	std::cout<<"-- VERIFICATION SOLUTION -- Terminee "<<std::endl;
+	std::cout<<"--VERIFICATION SOLUTION-- Terminee "<<std::endl;
 	return realisable;
 }
 
+
 /**
-	Methode qui renvoie toute les places libre dans un parking donné
+	Methode qui renvoie toute les places libre dans un parking donnÃ©
 */
 vector<Place> Solution::getPlacesVides(ListePlaces parking)
 {
@@ -202,7 +203,6 @@ ListePlaces Solution::nouveauParking(Date dateDebut, Date dateFin)
 				break;
 			}
 		}
-
 		if(dateDebut.getHeures() == 23 && dateDebut.getMinutes() == 59)
 		{
 			dateDebut.ajouterJour(1);
