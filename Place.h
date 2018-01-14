@@ -1,6 +1,7 @@
 #ifndef PLACE_H
 #define PLACE_H
 #include <string>
+#include <vector>
 
 class ListePlaces;
 
@@ -12,8 +13,8 @@ private:
 	string numeroPlace;
 	int taillePlace;
 	int numeroVehicule;
-	ListePlaces * placeAcces;
-	ListePlaces * placeSortie;
+	std::vector<ListePlaces*> placeAcces;
+	std::vector<ListePlaces*> placeSortie;
 public:
 	Place();
 	Place(string num,int taille);
@@ -30,10 +31,10 @@ public:
 	void setPlaceSortie(ListePlaces*);
 	bool peutAcceder(int taille);
 	bool peutSortir();
-	ListePlaces* getPlaceAcces();
-	ListePlaces* getPlaceSortie();
+	std::vector<ListePlaces*> getPlaceAcces();
+	std::vector<ListePlaces*> getPlaceSortie();
 
-	bool operator<(const Place& st);
+	bool operator<(Place& st);
 };
 
 #endif

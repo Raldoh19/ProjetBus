@@ -32,8 +32,15 @@ void Vehicule::setTailleVehicule(int taille){
 
 void Vehicule::ajouterMission(Mission m)
 {
+	bool skip = false;
+	for(int i = 0 ; i < missions.size() ; i++)
+		if(missions[i].getID() == m.getID())
+			skip = true;
+	if(!skip)
+	{
 	missions.push_back(m);
 	std::sort(missions.begin(), missions.end());
+	}
 }
 
 void Vehicule::afficherMissions()

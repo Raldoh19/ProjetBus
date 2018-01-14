@@ -17,16 +17,18 @@ int main(int argc, char* argv[])
 	
 	try
 	{
-		int nombreVehicule = 20;
+		int nombreVehicule = 5;
 		Date debut = Date(0,5,14,12,2017);
 		Date fin = Date(59,23,15,12,2017);
 		Parser parser("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
 		Generateur generator("C:\\Users\\Aymane\\Documents\\Visual Studio 2012\\Projects\\ProjetBus\\Debug\\");
 		//Parser parser("F:\\ProjetVisualStudio\\ProjetBus\\ProjetBus\\Debug\\DonneesBus\\entrees_volume\\");
 		//Generateur generator("F:\\ProjetVisualStudio\\ProjetBus\\ProjetBus\\Debug\\DonneesBus\\entrees_volume\\");
-		
+
 		generator.generateVehicules(nombreVehicule);
-		generator.generateParkingA(nombreVehicule*1.1, 11);
+		generator.generateParkingB10(1);
+		//generator.generateParkingB5(2);
+		//generator.generateParkingA(nombreVehicule*1.1, 11);
 		generator.generateMissions(nombreVehicule, debut, fin);
 
 		vector<Vehicule*> buses = parser.generateVehicules();
@@ -35,15 +37,12 @@ int main(int argc, char* argv[])
 		ListePlaces * parkingCopie = parser.generateParking(missions, buses);
 		vector<Vehicule> busConcerne;
 		for(unsigned int i =0; i<buses.size(); i ++)
-		{
 			busConcerne.push_back(*(buses[i]));
-			busConcerne[i].afficherMissions();
-		}
-		system("pause");
 		Solution s1(*(parking), busConcerne);
+		std::cout << "========ETAT DU PARKING a : "<< debut.toString() << " =========" << std::endl;
 		parking->afficherListePlaces();
 		s1.nouveauParking(debut, fin);
-		system("pause");
+		std::cout << "========ETAT DU PARKING a : "<< fin.toString() << " =========" << std::endl;
 		parking->afficherListePlaces();
 		s1.verificationSolution(s1,*parkingCopie,debut,fin);
 	}

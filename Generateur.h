@@ -16,6 +16,11 @@ public:
 	void setFile(string);
 	void generateVehicules(int nbVehicule);
 	void generateMissions(int nbVehicule, Date dateDebut, Date dateFin);
+
+	void generateParkingFile(ListePlaces parking);
+
 	void generateParkingA(int nombrePlace, int nbColonne);
+	void generateParkingB5(int nbColonne);
+	void generateParkingB10(int nbColonne);
 };
 
